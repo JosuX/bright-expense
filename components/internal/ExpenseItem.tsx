@@ -1,4 +1,4 @@
-import { expense } from "@/app/page";
+import expense from "@/types";
 import { TableCell, TableRow } from "@/components/ui/table";
 import React from "react";
 import ContextMenu from "./ContextMenu";

@@ -9,7 +9,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { expense } from "@/app/page";
+import expense from "@/types";
 
 const chartConfig = {
   price: {

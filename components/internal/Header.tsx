@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/collapsible";
 import { useState } from "react";
 import { Chart } from "./Chart";
-import { expense } from "@/app/page";
+import expense from "@/types";
 
 const Header = ({ daySum, monthly, currDate }: {currDate: Date, daySum: number, monthly: expense[]}) => {
 	const [isOpen, setIsOpen] = useState(false);
