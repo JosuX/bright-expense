@@ -80,7 +80,7 @@ export function Chart({ monthly, currDate }: { monthly: expense[], currDate: Dat
             />
                         <Line
               dataKey="price"
-              type="natural"
+              type="linear"
               stroke="#4A3AFF"
               strokeWidth={2}
               dot={false}
