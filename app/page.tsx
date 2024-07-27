@@ -30,9 +30,8 @@ import { format } from "date-fns";
 import expense from "@/types";
 
 const Page = () => {
-	const [currentDate, setCurrentDate] = useState(
-		new Date()
-	);
+	const today = new Date();
+	const [currentDate, setCurrentDate] = useState(today);
 	const {
 		daily,
 		setDaily,
@@ -48,16 +47,13 @@ const Page = () => {
 	);
 
 	useEffect(() => {
-		const today = new Date();
-		setCurrentDate(today);
-
 		const handleKeyDown = (event) => {
 			if (event.key === "ArrowLeft") {
 				handlePreviousDay();
 			} else if (
 				event.key === "ArrowRight" &&
 				currentDate.toLocaleDateString() !==
-					today.toLocaleDateString()
+					new Date().toLocaleDateString()
 			) {
 				handleNextDay();
 			}
