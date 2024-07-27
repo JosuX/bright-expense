@@ -5,6 +5,7 @@ import React from "react";
 import ContextMenu from "./ContextMenu";
 
 const ExpenseItem = ({ expense }: { expense: expense }) => {
+    expense.date = new Date(expense.date);
     expense.date.setDate(expense.date.getDate() - 1);
 	return (
 		<TableRow>
