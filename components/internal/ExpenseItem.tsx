@@ -12,7 +12,7 @@ const ExpenseItem = ({ expense }: { expense: expense }) => {
 				{expense.label}
 			</TableCell>
 			<TableCell className="w-3/12">
-				{format(expense.date, "e MMM YYYY")}
+				{format(expense.date, "e MMM yyyy")}
 			</TableCell>
 			<TableCell className="text-end">{`₱${new Intl.NumberFormat(
 				"en-US",
