@@ -44,21 +44,11 @@ const Page = () => {
 		queryKey,
 	}) => {
 		const date = queryKey[1];
-		const res = await fetch(`/expense?p=${pageParam}&d=${date}`);
-		let data = await res.json();
-		
-		data = data.map(expense => {
-			return {
-				...expense,
-				date: new Date(new Date(expense.date).getTime() - new Date(expense.date).getTimezoneOffset() * 60000)
-			};
-		});
-
-		console.log(data)
-	
-		return Promise.resolve(data);
+		const res = await fetch(
+			`/expense?p=${pageParam}&d=${date}`
+		);
+		return res.json();
 	};
-	
 
 	const {
 		data,
