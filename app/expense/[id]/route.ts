@@ -1,6 +1,6 @@
 "use server";
 
-import { deleteExpense, editExpense } from "@/db/expense";
+import { deleteExpense } from "@/db/expense";
 
 export async function DELETE(_, {
 	params,
