@@ -9,7 +9,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import expense from "@/types";
 import { useExpenseStore } from "@/stores/expenseStore";
 import { useShallow } from "zustand/react/shallow";
 
