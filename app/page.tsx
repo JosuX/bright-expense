@@ -30,8 +30,7 @@ import { format } from "date-fns";
 import expense from "@/types";
 
 const Page = () => {
-	const today = new Date();
-	const [currentDate, setCurrentDate] = useState(today);
+	const [currentDate, setCurrentDate] = useState(new Date());
 	const {
 		daily,
 		setDaily,
