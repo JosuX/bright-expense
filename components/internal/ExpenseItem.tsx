@@ -18,7 +18,7 @@ const ExpenseItem = ({ expense, refetch }: { expense: expense, refetch: any }) =
             <TableCell className="w-4/12">{expense.label}</TableCell>
             <TableCell className="w-3/12">
                 {expense.date.toLocaleDateString(
-                    "en-GB",
+                    undefined,
                     options
                 )}
             </TableCell>
