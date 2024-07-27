@@ -30,6 +30,30 @@ import { useExpenseStore } from "@/stores/expenseStore";
 import { format } from "date-fns";
 
 const Page = () => {
+	const [currentDate, setCurrentDate] = useState<Date>(null);
+	useEffect(() => {
+		setCurrentDate(new Date())
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key === "ArrowLeft") {
+				handlePreviousDay();
+			} else if (
+				event.key === "ArrowRight" &&
+				!(
+					currentDate.toLocaleDateString() ==
+					new Date().toLocaleDateString()
+				)
+			) {
+				handleNextDay();
+			}
+		};
+
+		window.addEventListener("keydown", handleKeyDown);
+		return () =>
+			window.removeEventListener(
+				"keydown",
+				handleKeyDown
+			);
+	}, [currentDate]);
 	const {
 		daily,
 		setDaily,
@@ -38,8 +62,7 @@ const Page = () => {
 	} = useExpenseStore(
 		useShallow((state) => ({ ...state }))
 	);
-	const today = new Date();
-	const [currentDate, setCurrentDate] = useState(today);
+
 
 	const fetchExpenses = async ({
 		pageParam = 1,
@@ -91,30 +114,7 @@ const Page = () => {
 		setCurrentDate(newDate);
 	};
 
-	useEffect(() => {
-		const handleKeyDown = (event: KeyboardEvent) => {
-			if (event.key === "ArrowLeft") {
-				handlePreviousDay();
-			} else if (
-				event.key === "ArrowRight" &&
-				!(
-					currentDate.toLocaleDateString() ==
-					new Date().toLocaleDateString()
-				)
-			) {
-				handleNextDay();
-			}
-		};
 
-		window.addEventListener("keydown", handleKeyDown);
-		return () =>
-			window.removeEventListener(
-				"keydown",
-				handleKeyDown
-			);
-	}, [currentDate]);
-
-	console.log(daily);
 
 	const content = daily?.map(
 		(expense: expense, index: number) => (
