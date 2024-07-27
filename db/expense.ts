@@ -5,7 +5,7 @@ import { startOfDay, endOfDay, startOfMonth, endOfMonth } from 'date-fns';
 
 const addExpense = async (data: {
 	label: string;
-	date: Date; // Change the type to Date
+	date: Date;
 	price: number;
 }) =>
 	await prisma.expense.create({
