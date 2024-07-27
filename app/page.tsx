@@ -25,23 +25,35 @@ import {
 	PaginationNext,
 	PaginationPrevious,
 } from "@/components/ui/pagination";
-import expense from "@/types";
 import { useExpenseStore } from "@/stores/expenseStore";
 import { format } from "date-fns";
-import useDate from "@/hooks/date";
+import expense from "@/types";
 
 const Page = () => {
-	const [currentDate, setCurrentDate] = useState(useDate());
+	const today = new Date();
+	const [currentDate, setCurrentDate] = useState(today);
+	const {
+		daily,
+		setDaily,
+		setMonthly,
+		setRefresh,
+	} = useExpenseStore(
+		useShallow((state) => ({
+			daily: state.daily,
+			setDaily: state.setDaily,
+			setMonthly: state.setMonthly,
+			setRefresh: state.setRefresh,
+		}))
+	);
+
 	useEffect(() => {
-		const handleKeyDown = (event: KeyboardEvent) => {
+		const handleKeyDown = (event) => {
 			if (event.key === "ArrowLeft") {
 				handlePreviousDay();
 			} else if (
 				event.key === "ArrowRight" &&
-				!(
-					currentDate.toLocaleDateString() ==
+				currentDate.toLocaleDateString() !==
 					new Date().toLocaleDateString()
-				)
 			) {
 				handleNextDay();
 			}
@@ -54,15 +66,6 @@ const Page = () => {
 				handleKeyDown
 			);
 	}, [currentDate]);
-	const {
-		daily,
-		setDaily,
-		setMonthly,
-		setRefresh,
-	} = useExpenseStore(
-		useShallow((state) => ({ ...state }))
-	);
-
 
 	const fetchExpenses = async ({
 		pageParam = 1,
@@ -72,13 +75,15 @@ const Page = () => {
 		const res = await fetch(
 			`/expense?p=${pageParam}&d=${date}`
 		);
+		if (!res.ok) {
+			throw new Error("Network response was not ok");
+		}
 		return res.json();
 	};
 
 	const {
 		data,
 		status,
-		error,
 		fetchNextPage,
 		isFetchingNextPage,
 		hasNextPage,
@@ -91,16 +96,22 @@ const Page = () => {
 		queryFn: fetchExpenses,
 		initialPageParam: 1,
 		getNextPageParam: (lastPage, allPages) => {
-			const nextPage = lastPage.length
+			return lastPage.length
 				? allPages.length + 1
 				: undefined;
-			return nextPage;
 		},
 	});
 
-	setDaily(data?.pages[0].day, data?.pages[0].daySum);
-	setMonthly(data?.pages[0].month);
-	setRefresh(refetch);
+	useEffect(() => {
+		if (data?.pages) {
+			const firstPage = data.pages[0];
+			if (firstPage) {
+				setDaily(firstPage.day, firstPage.daySum);
+				setMonthly(firstPage.month);
+			}
+		}
+		setRefresh(refetch);
+	}, [data, setDaily, setMonthly, setRefresh]);
 
 	const handlePreviousDay = () => {
 		const newDate = new Date(currentDate);
@@ -114,16 +125,12 @@ const Page = () => {
 		setCurrentDate(newDate);
 	};
 
-
-
-	const content = daily?.map(
-		(expense: expense, index: number) => (
-			<ExpenseItem
-				expense={expense}
-				key={expense.id}
-			/>
-		)
-	);
+	const content = daily?.map((expenseItem) => (
+		<ExpenseItem
+			expense={expenseItem}
+			key={expenseItem.id}
+		/>
+	));
 
 	return (
 		<div className="flex flex-col items-center justify-center gap-3 mx-8">
@@ -157,38 +164,33 @@ const Page = () => {
 				<div className="overflow-y-scroll min-h-40 max-h-[500px]">
 					<Table className="bg-[#171717] relative">
 						<TableBody className="bg-white">
-							{daily?.length == 0 ||
-							daily === undefined ? (
-								status == "pending" ? (
-									<TableRow>
-										<TableCell
-											colSpan={4}
-											className="font-medium text-center justify-center items-center"
-										>
-											<LineWave
-												visible={
-													true
-												}
-												height="100"
-												width="100"
-												color="#171717"
-												ariaLabel="line-wave-loading"
-											/>
-										</TableCell>
-									</TableRow>
-								) : (
-									<TableRow>
-										<TableCell
-											colSpan={4}
-											className="font-medium text-center justify-center items-center"
-										>
-											It looks like
-											you haven't
-											added any
-											expenses
-										</TableCell>
-									</TableRow>
-								)
+							{status === "pending" ? (
+								<TableRow>
+									<TableCell
+										colSpan={4}
+										className="font-medium text-center justify-center items-center"
+									>
+										<LineWave
+											visible={true}
+											height="100"
+											width="100"
+											color="#171717"
+											ariaLabel="line-wave-loading"
+										/>
+									</TableCell>
+								</TableRow>
+							) : daily?.length === 0 ||
+							  daily === undefined ? (
+								<TableRow>
+									<TableCell
+										colSpan={4}
+										className="font-medium text-center justify-center items-center"
+									>
+										It looks like you
+										haven't added any
+										expenses
+									</TableCell>
+								</TableRow>
 							) : (
 								content
 							)}
@@ -196,7 +198,6 @@ const Page = () => {
 					</Table>
 				</div>
 				<FloatingButton />
-
 				<div className="bg-[#171717] h-10 text-white">
 					<Pagination className="items-start justify-start">
 						<PaginationContent className="items-start justify-start">
@@ -218,17 +219,12 @@ const Page = () => {
 							</PaginationItem>
 							<PaginationItem
 								hidden={
-									currentDate.toLocaleDateString() ==
+									currentDate.toLocaleDateString() ===
 									new Date().toLocaleDateString()
 								}
 							>
 								<PaginationNext
-									onClick={
-										currentDate.toLocaleDateString() ==
-										new Date().toLocaleDateString()
-											? null
-											: handleNextDay
-									}
+									onClick={handleNextDay}
 									className="hover:!bg-[#171717] hover:text-white text-white"
 								/>
 							</PaginationItem>
