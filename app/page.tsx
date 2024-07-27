@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { LineWave } from 'react-loader-spinner'
+import { LineWave } from "react-loader-spinner";
 import { useShallow } from "zustand/react/shallow";
 import FloatingButton from "@/components/internal/AddButton";
 import Header from "@/components/internal/Header";
@@ -160,13 +160,22 @@ const Page = () => {
 							{daily?.length == 0 ||
 							daily === undefined ? (
 								status == "pending" ? (
-									<LineWave
-										visible={true}
-										height="100"
-										width="100"
-										color="#171717"
-										ariaLabel="line-wave-loading"
-									/>
+									<TableRow>
+										<TableCell
+											colSpan={4}
+											className="font-medium text-center justify-center items-center"
+										>
+											<LineWave
+												visible={
+													true
+												}
+												height="100"
+												width="100"
+												color="#171717"
+												ariaLabel="line-wave-loading"
+											/>
+										</TableCell>
+									</TableRow>
 								) : (
 									<TableRow>
 										<TableCell
