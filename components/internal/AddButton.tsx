@@ -12,7 +12,7 @@ import { TiPlus } from "react-icons/ti";
 import { FormModal } from "./ExpenseModal";
 import { useState } from "react";
 
-const FloatingButton = ({refetch}) => {
+const FloatingButton = () => {
 	const [open, setOpen] = useState(false);
 	return (
 		<div className="mx-6 absolute bottom-14 right-0">
@@ -25,7 +25,7 @@ const FloatingButton = ({refetch}) => {
 						<TiPlus color="white" size={20} />
 					</button>
 				</DialogTrigger>
-				<DialogContent >
+				<DialogContent>
 					<DialogHeader>
 						<DialogTitle>
 							Add expense
@@ -35,7 +35,9 @@ const FloatingButton = ({refetch}) => {
 						</DialogDescription>
 					</DialogHeader>
 
-					<FormModal setOpen={setOpen} refetch={refetch} />
+					<FormModal
+						setOpen={setOpen}
+					/>
 				</DialogContent>
 			</Dialog>
 		</div>

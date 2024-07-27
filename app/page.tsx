@@ -28,7 +28,7 @@ import expense from "@/types";
 import { useExpenseStore } from "@/stores/expenseStore";
 
 const Page = () => {
-	const { daily, daySum, monthly, setDaily, setMonthly } = useExpenseStore(
+	const { daily, setDaily, setMonthly, setRefresh } = useExpenseStore(
 		useShallow((state) => ({ ...state })),
 	)
 	const today = new Date();
@@ -70,7 +70,7 @@ const Page = () => {
 
 	setDaily(data?.pages[0].day, data?.pages[0].daySum)
 	setMonthly(data?.pages[0].month)
-	console.log(daily, daySum, monthly)
+	setRefresh(refetch)
 
 	const handlePreviousDay = () => {
 		const newDate = new Date(currentDate);
@@ -107,15 +107,12 @@ const Page = () => {
 			);
 	}, [currentDate]);
 
-	const content = data?.pages.map((page) =>
-		page.day.map((expense: expense, index: number) => (
+	const content = daily.map((expense: expense, index: number) => (
 			<ExpenseItem
 				expense={expense}
 				key={expense.id}
-				refetch={refetch}
 			/>
-		))
-	);
+		));
 
 	return (
 		<div className="flex flex-col items-center justify-center gap-3 mx-8">
@@ -126,8 +123,6 @@ const Page = () => {
 				</span>
 			</div>
 			<Header
-				daySum={data?.pages[0].daySum}
-				monthly={data?.pages[0].month}
 				currDate={currentDate}
 			/>
 			<h2 className="self-start font-semibold text-base mt-5">
@@ -162,7 +157,7 @@ const Page = () => {
 						</TableBody>
 					</Table>
 				</div>
-				<FloatingButton refetch={refetch} />
+				<FloatingButton/>
 
 				<div className="bg-[#171717] h-10 text-white">
 					<Pagination className="items-start justify-start">
