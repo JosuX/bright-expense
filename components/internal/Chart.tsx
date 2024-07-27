@@ -42,7 +42,7 @@ export function Chart({ currDate }: { currDate: Date }) {
     const adjustedDaysInMonth = (todayMonth === month && todayYear === year) ? todayDate : daysInMonth;
   
     const parsed = useMemo(() => {
-      let parsedData = Array.from({ length: adjustedDaysInMonth }, (_, index) => {
+      let parsedData = Array.from({ length: adjustedDaysInMonth + 1 }, (_, index) => {
         const day = index + 1;
         return { date: `${month}/${day}`, price: 0 };
       });
