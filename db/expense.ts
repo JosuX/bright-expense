@@ -27,7 +27,6 @@ const getMonthlyExpense = async (date: Date) => {
 };
 
 const getDailyExpense = async (date: Date, page: number, pageSize: number) => {
-	date.setDate(date.getDate() - 1);
 	const startDate = startOfDay(date);
 	const endDate = endOfDay(date);
 
