@@ -12,8 +12,8 @@ import {
 import { expense } from "@/app/page";
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  price: {
+    label: "Price",
     color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig;
@@ -73,7 +73,7 @@ export function Chart({ monthly, currDate }: { monthly: expense[], currDate: Dat
             />
             <Area
               dataKey="price"
-              type="natural"
+              type="linear"
               fill="#4A3AFF"
               fillOpacity={0.5}
               stroke="#4A3AFF"
