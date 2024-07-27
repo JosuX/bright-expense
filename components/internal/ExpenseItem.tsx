@@ -2,9 +2,11 @@ import { expense } from "@/app/page";
 import { TableCell, TableRow } from "@/components/ui/table";
 import React from "react";
 import ContextMenu from "./ContextMenu";
+import exp from "constants";
 
 const ExpenseItem = ({ expense, refetch }: { expense: expense, refetch: any }) => {
     expense.date = new Date(expense.date);
+    expense.date.setDate(expense.date.getDate() - 1)
     const options: Intl.DateTimeFormatOptions = {
         day: "2-digit",
         month: "short",
