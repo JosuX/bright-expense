@@ -24,8 +24,9 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
-import { toast } from "sonner"
-
+import { toast } from "sonner";
+import { useExpenseStore } from "@/stores/expenseStore";
+import { useShallow } from "zustand/react/shallow";
 
 const FormSchema = z.object({
 	label: z.string().min(2, {
@@ -46,7 +47,10 @@ const FormSchema = z.object({
 	}),
 });
 
-export function FormModal({ setOpen, refetch }) {
+export function FormModal({ setOpen }) {
+	const { refresh } = useExpenseStore(
+		useShallow((state) => ({ ...state })),
+	)
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
@@ -54,14 +58,18 @@ export function FormModal({ setOpen, refetch }) {
 		},
 	});
 
-	async function onSubmit(data: z.infer<typeof FormSchema>) {
-        await fetch("/expense", {
-            method: "POST",
-            body: JSON.stringify(data)
-        })
-        refetch()
-        setOpen(false)
-        toast.success("An expense has been successfully added.")
+	async function onSubmit(
+		data: z.infer<typeof FormSchema>
+	) {
+		await fetch("/expense", {
+			method: "POST",
+			body: JSON.stringify(data),
+		});
+		refresh();
+		setOpen(false);
+		toast.success(
+			"An expense has been successfully added."
+		);
 	}
 
 	return (
@@ -79,7 +87,7 @@ export function FormModal({ setOpen, refetch }) {
 							<FormControl>
 								<Input
 									{...field}
-                                    placeholder="Enter a label"
+									placeholder="Enter a label"
 									type="string"
 								/>
 							</FormControl>
@@ -92,9 +100,7 @@ export function FormModal({ setOpen, refetch }) {
 					name="date"
 					render={({ field }) => (
 						<FormItem className="flex flex-col">
-							<FormLabel>
-								Date
-							</FormLabel>
+							<FormLabel>Date</FormLabel>
 							<Popover>
 								<PopoverTrigger asChild>
 									<FormControl>
@@ -160,7 +166,7 @@ export function FormModal({ setOpen, refetch }) {
 							<FormControl>
 								<CurrencyInput
 									name={field.name}
-                                    placeholder="Enter a price"
+									placeholder="Enter a price"
 									onChange={
 										field.onChange
 									}

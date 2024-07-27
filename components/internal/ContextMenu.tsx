@@ -1,41 +1,56 @@
-import React from 'react'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
-import { HiDotsVertical } from 'react-icons/hi'
-import { toast } from 'sonner';
+"use client"
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { HiDotsVertical } from "react-icons/hi";
+import { toast } from "sonner";
+import { useExpenseStore } from "@/stores/expenseStore";
+import { useShallow } from "zustand/react/shallow";
 
-const ContextMenu = ({expense, refetch}) => {
+const ContextMenu = ({ expense }) => {
+    const { refresh } = useExpenseStore(
+		useShallow((state) => ({ ...state })),
+	)
+	const handleDelete = async () => {
+		try {
+			const response = await fetch(
+				`/expense/${expense.id}`,
+				{
+					method: "DELETE",
+				}
+			);
 
-    const handleDelete = async () => {
-        try {
-            const response = await fetch(`/expense/${expense.id}`, {
-                method: "DELETE",
-            });
+			if (response.ok) {
+				toast.success(
+					"Expense deleted successfully!"
+				);
+			} else {
+				toast.error("Failed to delete expense.");
+			}
+			refresh();
+		} catch (error) {
+			console.error("Error deleting expense:", error);
+			toast.error(
+				"An error occurred while deleting the expense."
+			);
+		}
+	};
 
-            if (response.ok) {
-                toast.success("Expense deleted successfully!");
-            } else {
-                toast.error("Failed to delete expense.");
-            }
-            refetch()
-        } catch (error) {
-            console.error("Error deleting expense:", error);
-            toast.error("An error occurred while deleting the expense.");
-        }
-        
-    };
+	return (
+		<DropdownMenu>
+			<DropdownMenuTrigger>
+				<HiDotsVertical size={20} />
+			</DropdownMenuTrigger>
+			<DropdownMenuContent>
+				<DropdownMenuItem onSelect={handleDelete}>
+					Delete
+				</DropdownMenuItem>
+			</DropdownMenuContent>
+		</DropdownMenu>
+	);
+};
 
-  return (
-    <DropdownMenu>
-    <DropdownMenuTrigger>
-        <HiDotsVertical size={20} />
-    </DropdownMenuTrigger>
-    <DropdownMenuContent>
-        <DropdownMenuItem onSelect={handleDelete}>
-            Delete
-        </DropdownMenuItem>
-    </DropdownMenuContent>
-</DropdownMenu>
-  )
-}
-
-export default ContextMenu
+export default ContextMenu;

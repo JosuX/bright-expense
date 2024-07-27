@@ -11,10 +11,15 @@ import {
 import { useState } from "react";
 import { Chart } from "./Chart";
 import expense from "@/types";
+import { useExpenseStore } from "@/stores/expenseStore";
+import { useShallow } from "zustand/react/shallow";
 
-const Header = ({ daySum, monthly, currDate }: {currDate: Date, daySum: number, monthly: expense[]}) => {
+const Header = ({ currDate }: { currDate: Date }) => {
 	const [isOpen, setIsOpen] = useState(false);
-    
+	const { daySum } = useExpenseStore(
+		useShallow((state) => ({ ...state }))
+	);
+
 	return (
 		<Collapsible
 			open={isOpen}
@@ -25,7 +30,13 @@ const Header = ({ daySum, monthly, currDate }: {currDate: Date, daySum: number, 
 				<div className="flex flex-row justify-between items-center">
 					<div className="flex flex-col text-start">
 						<span className="font-semibold text-xl">
-                        {`₱${new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(daySum ?? 0)}`}
+							{`₱${new Intl.NumberFormat(
+								"en-US",
+								{
+									minimumFractionDigits: 2,
+									maximumFractionDigits: 2,
+								}
+							).format(daySum ?? 0)}`}
 						</span>
 						<span className="font-medium text-xs">
 							Total Expenses
@@ -39,7 +50,7 @@ const Header = ({ daySum, monthly, currDate }: {currDate: Date, daySum: number, 
 				</div>
 			</CollapsibleTrigger>
 			<CollapsibleContent className="mt-7">
-				<Chart monthly={monthly} currDate={currDate}/>
+				<Chart currDate={currDate} />
 			</CollapsibleContent>
 		</Collapsible>
 	);
