@@ -16,5 +16,5 @@ model Expense {
   id Int @id @default(autoincrement())
   label String
   date DateTime @default(now())
-  price Decimal
+  price Float
 }
