@@ -72,11 +72,7 @@ const Page = () => {
 			return nextPage;
 		},
 	});
-	if(status == "success"){
-		setDaily(data?.pages[0].day, data?.pages[0].daySum);
-		setMonthly(data?.pages[0].month);
-		setRefresh(refetch);
-	}
+
 
 
 
@@ -93,6 +89,14 @@ const Page = () => {
 	};
 
 	useEffect(() => {
+		if(status == "pending"){
+			setDaily([], 0);
+		}
+		if(status == "success"){
+			setDaily(data?.pages[0].day, data?.pages[0].daySum);
+			setMonthly(data?.pages[0].month);
+			setRefresh(refetch);
+		}
 		const handleKeyDown = (event: KeyboardEvent) => {
 			if (event.key === "ArrowLeft") {
 				handlePreviousDay();
@@ -113,6 +117,8 @@ const Page = () => {
 				"keydown",
 				handleKeyDown
 			);
+
+			
 	}, [currentDate]);
 
 	console.log(daily)
