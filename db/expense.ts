@@ -7,10 +7,13 @@ const addExpense = async (data: {
 	label: string;
 	date: Date;
 	price: number;
-}) =>
-	await prisma.expense.create({
-		data: data,
+}) => {
+	let parsed_date = data.date;
+	parsed_date.setDate(data.date.getDate() + 1)
+	return await prisma.expense.create({
+		data: {...data, date: parsed_date},
 	});
+}
 
 const getMonthlyExpense = async (date: Date) => {
 	const startDate = startOfMonth(date);

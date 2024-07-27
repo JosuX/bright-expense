@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/pagination";
 import expense from "@/types";
 import { useExpenseStore } from "@/stores/expenseStore";
+import { format } from "date-fns";
 
 const Page = () => {
 	const {
@@ -187,9 +188,7 @@ const Page = () => {
 							</PaginationItem>
 							<PaginationItem>
 								<PaginationLink className="hover:!bg-[#171717] hover:text-white text-white">
-									{currentDate.getMonth() +
-										1}
-									/{currentDate.getDate()}
+									{format(currentDate, "M/d")}
 								</PaginationLink>
 							</PaginationItem>
 							<PaginationItem
