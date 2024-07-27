@@ -5,14 +5,13 @@ import React from "react";
 import ContextMenu from "./ContextMenu";
 
 const ExpenseItem = ({ expense }: { expense: expense }) => {
-
 	return (
 		<TableRow>
 			<TableCell className="w-4/12">
 				{expense.label}
 			</TableCell>
 			<TableCell className="w-3/12">
-				{format(expense.date, "e MMM yyyy")}
+				{format(expense.date, "d MMM yyyy")}
 			</TableCell>
 			<TableCell className="text-end">{`₱${new Intl.NumberFormat(
 				"en-US",
