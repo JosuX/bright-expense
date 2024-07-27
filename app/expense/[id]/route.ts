@@ -2,7 +2,7 @@
 
 import { deleteExpense, editExpense } from "@/db/expense";
 
-export async function DELETE({
+export async function DELETE(_, {
 	params,
 }: {
 	params: { id: string };

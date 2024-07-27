@@ -46,7 +46,7 @@ const FormSchema = z.object({
 	}),
 });
 
-export function FormModal({ setOpen }) {
+export function FormModal({ setOpen, refetch }) {
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
@@ -54,7 +54,12 @@ export function FormModal({ setOpen }) {
 		},
 	});
 
-	function onSubmit(data: z.infer<typeof FormSchema>) {
+	async function onSubmit(data: z.infer<typeof FormSchema>) {
+        await fetch("/expense", {
+            method: "POST",
+            body: JSON.stringify(data)
+        })
+        refetch()
         setOpen(false)
         toast.success("An expense has been successfully added.")
 	}

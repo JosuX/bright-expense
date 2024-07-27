@@ -9,21 +9,23 @@ import {
 	CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { useState } from "react";
-import { Chart } from "./expenses/chart";
+import { Chart } from "./expenses/Chart";
+import { expense } from "@/app/page";
 
-const Header = () => {
+const Header = ({ daySum, monthly, currDate }: {currDate: Date, daySum: number, monthly: expense[]}) => {
 	const [isOpen, setIsOpen] = useState(false);
+    
 	return (
 		<Collapsible
 			open={isOpen}
 			onOpenChange={setIsOpen}
-			className="text-white bg-[#171717] rounded-2xl py-6 px-7 w-[300px]"
+			className="text-white bg-[#171717] rounded-xl py-6 px-7 w-full"
 		>
 			<CollapsibleTrigger asChild>
 				<div className="flex flex-row justify-between items-center">
 					<div className="flex flex-col text-start">
 						<span className="font-semibold text-xl">
-							₱ 900.50
+							₱{new Intl.NumberFormat("en-US").format(daySum ?? 0)}
 						</span>
 						<span className="font-medium text-xs">
 							Total Expenses
@@ -37,7 +39,7 @@ const Header = () => {
 				</div>
 			</CollapsibleTrigger>
 			<CollapsibleContent className="mt-7">
-				<Chart/>
+				<Chart monthly={monthly} currDate={currDate}/>
 			</CollapsibleContent>
 		</Collapsible>
 	);

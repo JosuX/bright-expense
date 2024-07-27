@@ -1,6 +1,7 @@
 "use server";
 
 import prisma from "@/db/client";
+import { startOfDay, endOfDay, startOfMonth, endOfMonth } from 'date-fns';
 
 const addExpense = async (data: {
 	label: string;
@@ -11,8 +12,52 @@ const addExpense = async (data: {
 		data: data,
 	});
 
-const getAllExpense = async () =>
-	await prisma.expense.findMany();
+	const getMonthlyExpense = async (date: Date) => {
+		const startDate = startOfMonth(date);
+		const endDate = endOfMonth(date);
+	
+		return await prisma.expense.findMany({
+			where: {
+				date: {
+					gte: startDate.toISOString(),
+					lte: endDate.toISOString(),
+				},
+			},
+		});
+	};
+
+	const getDailyExpense = async (date: Date, page: number, pageSize: number) => {
+		const startDate = startOfDay(date);
+		const endDate = endOfDay(date);
+	
+		return await prisma.expense.findMany({
+			where: {
+				date: {
+					gte: startDate.toISOString(),
+					lte: endDate.toISOString(),
+				},
+			},
+			skip: (page - 1) * pageSize,
+			take: pageSize,
+		});
+	};
+
+	const getSumDailyExpense = async (date: Date) => {
+		const startDate = startOfDay(date);
+		const endDate = endOfDay(date);
+	
+		return await prisma.expense.aggregate({
+			_sum:{
+				price: true
+			},
+			where: {
+				date: {
+					gte: startDate.toISOString(),
+					lte: endDate.toISOString(),
+				},
+			},
+		});
+	};
 
 const editExpense = async (id: number, data: any) =>
 	await prisma.expense.update({
@@ -31,7 +76,9 @@ const deleteExpense = async (id: number) =>
 
 export {
 	addExpense,
-	getAllExpense,
+	getDailyExpense,
 	editExpense,
 	deleteExpense,
+	getMonthlyExpense,
+	getSumDailyExpense
 };
