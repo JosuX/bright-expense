@@ -136,7 +136,7 @@ const Page = () => {
 						<TableRow>
 							<TableHead className="w-4/12">Label</TableHead>
 							<TableHead className="w-3/12">Date</TableHead>
-							<TableHead className="text-start">Price</TableHead>
+							<TableHead className="text-end">Price</TableHead>
 							<TableHead className="!px-[26px] w-0" />
 						</TableRow>
 					</TableHeader>
