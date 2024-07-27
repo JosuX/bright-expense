@@ -39,7 +39,7 @@ const Page = () => {
 			} else if (
 				event.key === "ArrowRight" &&
 				!(
-					currentDate.toLocaleDateString() ==
+					currentDate?.toLocaleDateString() ==
 					new Date().toLocaleDateString()
 				)
 			) {
@@ -86,7 +86,7 @@ const Page = () => {
 	} = useInfiniteQuery({
 		queryKey: [
 			"expenses",
-			currentDate.toISOString().split("T")[0],
+			currentDate?.toISOString().split("T")[0],
 		],
 		queryFn: fetchExpenses,
 		initialPageParam: 1,
@@ -104,13 +104,13 @@ const Page = () => {
 
 	const handlePreviousDay = () => {
 		const newDate = new Date(currentDate);
-		newDate.setDate(currentDate.getDate() - 1);
+		newDate.setDate(currentDate?.getDate() - 1);
 		setCurrentDate(newDate);
 	};
 
 	const handleNextDay = () => {
 		const newDate = new Date(currentDate);
-		newDate.setDate(currentDate.getDate() + 1);
+		newDate.setDate(currentDate?.getDate() + 1);
 		setCurrentDate(newDate);
 	};
 
@@ -219,13 +219,13 @@ const Page = () => {
 							</PaginationItem>
 							<PaginationItem
 								hidden={
-									currentDate.toLocaleDateString() ==
+									currentDate?.toLocaleDateString() ==
 									new Date().toLocaleDateString()
 								}
 							>
 								<PaginationNext
 									onClick={
-										currentDate.toLocaleDateString() ==
+										currentDate?.toLocaleDateString() ==
 										new Date().toLocaleDateString()
 											? null
 											: handleNextDay
