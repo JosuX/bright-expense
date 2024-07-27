@@ -112,6 +112,8 @@ const Page = () => {
 			);
 	}, [currentDate]);
 
+	console.log(daily)
+
 	const content = daily?.map(
 		(expense: expense, index: number) => (
 			<ExpenseItem
