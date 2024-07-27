@@ -53,6 +53,8 @@ const Page = () => {
 				date: new Date(new Date(expense.date).getTime() - new Date(expense.date).getTimezoneOffset() * 60000)
 			};
 		});
+
+		console.log(data)
 	
 		return Promise.resolve(data);
 	};
