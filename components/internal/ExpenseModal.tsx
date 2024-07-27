@@ -61,9 +61,11 @@ export function FormModal({ setOpen }) {
 	async function onSubmit(
 		data: z.infer<typeof FormSchema>
 	) {
+		let parsed_data = data;
+		parsed_data.date = new Date(data.date.toISOString())
 		await fetch("/expense", {
 			method: "POST",
-			body: JSON.stringify(data),
+			body: JSON.stringify(parsed_data),
 		});
 		refresh();
 		setOpen(false);

@@ -44,11 +44,19 @@ const Page = () => {
 		queryKey,
 	}) => {
 		const date = queryKey[1];
-		const res = await fetch(
-			`/expense?p=${pageParam}&d=${date}`
-		);
-		return res.json();
+		const res = await fetch(`/expense?p=${pageParam}&d=${date}`);
+		let data = await res.json();
+		
+		data = data.map(expense => {
+			return {
+				...expense,
+				date: new Date(new Date(expense.date).getTime() - new Date(expense.date).getTimezoneOffset() * 60000)
+			};
+		});
+	
+		return Promise.resolve(data);
 	};
+	
 
 	const {
 		data,
@@ -73,8 +81,9 @@ const Page = () => {
 		},
 	});
 
-
-
+	setDaily(data?.pages[0].day, data?.pages[0].daySum);
+	setMonthly(data?.pages[0].month);
+	setRefresh(refetch);
 
 	const handlePreviousDay = () => {
 		const newDate = new Date(currentDate);
@@ -89,14 +98,6 @@ const Page = () => {
 	};
 
 	useEffect(() => {
-		if(status == "pending"){
-			setDaily([], 0);
-		}
-		if(status == "success"){
-			setDaily(data?.pages[0].day, data?.pages[0].daySum);
-			setMonthly(data?.pages[0].month);
-			setRefresh(refetch);
-		}
 		const handleKeyDown = (event: KeyboardEvent) => {
 			if (event.key === "ArrowLeft") {
 				handlePreviousDay();
@@ -117,8 +118,6 @@ const Page = () => {
 				"keydown",
 				handleKeyDown
 			);
-
-			
 	}, [currentDate]);
 
 	console.log(daily)
