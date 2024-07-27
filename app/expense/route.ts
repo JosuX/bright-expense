@@ -1,19 +1,21 @@
 "use server"
 
 import { addExpense, getDailyExpense, getMonthlyExpense, getSumDailyExpense } from "@/db/expense";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
-	const params = req.nextUrl.searchParams
-	const day = await getDailyExpense(new Date(params.get("d")), parseInt(params.get("p")), 10)
-	const month = await getMonthlyExpense(new Date(params.get("d")))
-	const daySum = await getSumDailyExpense(new Date(params.get("d")))
-	return Response.json({day: day, month: month, daySum: daySum._sum.price});
+	const params = req.nextUrl.searchParams;
+	const date = new Date(params.get("d") || Date.now());
+	const day = await getDailyExpense(date, parseInt(params.get("p") || "10"), 10);
+	const month = await getMonthlyExpense(date);
+	const daySum = await getSumDailyExpense(date);
+	return NextResponse.json({ day: day, month: month, daySum: daySum._sum.price });
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
 	const data = await req.json();
-	console.log(data.date ,typeof data.date)
-	const result = await addExpense(data)
-	return Response.json(result);
+	let parsed_date = new Date(data.date);
+	parsed_date.setDate(parsed_date.getDate() + 1);
+	const result = await addExpense({...data, date: parsed_date});
+	return NextResponse.json(result);
 }
