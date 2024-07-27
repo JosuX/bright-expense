@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useShallow } from 'zustand/react/shallow'
 import FloatingButton from "@/components/internal/AddButton";
 import Header from "@/components/internal/Header";
 import { Card } from "@/components/ui/card";
@@ -23,15 +24,13 @@ import {
 	PaginationNext,
 	PaginationPrevious,
 } from "@/components/ui/pagination";
-
-export interface expense {
-	id: number;
-	label: string;
-	date: Date;
-	price: number;
-}
+import expense from "@/types";
+import { useExpenseStore } from "@/stores/expenseStore";
 
 const Page = () => {
+	const { daily, daySum, monthly, setDaily, setMonthly } = useExpenseStore(
+		useShallow((state) => ({ ...state })),
+	)
 	const today = new Date();
 	const [currentDate, setCurrentDate] = useState(today);
 
@@ -68,6 +67,10 @@ const Page = () => {
 			return nextPage;
 		},
 	});
+
+	setDaily(data?.pages[0].day, data?.pages[0].daySum)
+	setMonthly(data?.pages[0].month)
+	console.log(daily, daySum, monthly)
 
 	const handlePreviousDay = () => {
 		const newDate = new Date(currentDate);
