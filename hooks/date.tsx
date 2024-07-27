@@ -6,7 +6,7 @@ const useDate = () => {
   const [formattedDate, setFormattedDate] = useState(null);
 
   useEffect(
-    () => setFormattedDate(new Date().toLocaleDateString("en-US")),
+    () => setFormattedDate(new Date()),
     []
   );
 
