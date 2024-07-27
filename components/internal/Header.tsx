@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/collapsible";
 import { useState } from "react";
 import { Chart } from "./Chart";
-import expense from "@/types";
 import { useExpenseStore } from "@/stores/expenseStore";
 import { useShallow } from "zustand/react/shallow";
 
