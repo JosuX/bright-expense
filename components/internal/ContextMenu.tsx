@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -11,9 +11,9 @@ import { useExpenseStore } from "@/stores/expenseStore";
 import { useShallow } from "zustand/react/shallow";
 
 const ContextMenu = ({ expense }) => {
-    const { refresh } = useExpenseStore(
-		useShallow((state) => ({ ...state })),
-	)
+	const { refresh } = useExpenseStore(
+		useShallow((state) => ({ ...state }))
+	);
 	const handleDelete = async () => {
 		try {
 			const response = await fetch(

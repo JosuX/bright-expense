@@ -49,8 +49,8 @@ const FormSchema = z.object({
 
 export function FormModal({ setOpen }) {
 	const { refresh } = useExpenseStore(
-		useShallow((state) => ({ ...state })),
-	)
+		useShallow((state) => ({ ...state }))
+	);
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
 		defaultValues: {

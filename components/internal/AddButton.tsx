@@ -35,9 +35,7 @@ const FloatingButton = () => {
 						</DialogDescription>
 					</DialogHeader>
 
-					<FormModal
-						setOpen={setOpen}
-					/>
+					<FormModal setOpen={setOpen} />
 				</DialogContent>
 			</Dialog>
 		</div>
