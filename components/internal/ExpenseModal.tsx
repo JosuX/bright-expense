@@ -79,6 +79,7 @@ export function FormModal({ setOpen, refetch }) {
 							<FormControl>
 								<Input
 									{...field}
+                                    placeholder="Enter a label"
 									type="string"
 								/>
 							</FormControl>
@@ -159,6 +160,7 @@ export function FormModal({ setOpen, refetch }) {
 							<FormControl>
 								<CurrencyInput
 									name={field.name}
+                                    placeholder="Enter a price"
 									onChange={
 										field.onChange
 									}

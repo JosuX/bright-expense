@@ -9,7 +9,7 @@ import {
 	CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { useState } from "react";
-import { Chart } from "./expenses/Chart";
+import { Chart } from "./Chart";
 import { expense } from "@/app/page";
 
 const Header = ({ daySum, monthly, currDate }: {currDate: Date, daySum: number, monthly: expense[]}) => {
@@ -25,7 +25,7 @@ const Header = ({ daySum, monthly, currDate }: {currDate: Date, daySum: number, 
 				<div className="flex flex-row justify-between items-center">
 					<div className="flex flex-col text-start">
 						<span className="font-semibold text-xl">
-							₱{new Intl.NumberFormat("en-US").format(daySum ?? 0)}
+                        {`₱${new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(daySum ?? 0)}`}
 						</span>
 						<span className="font-medium text-xs">
 							Total Expenses
