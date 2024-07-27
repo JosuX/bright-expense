@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 import { Card } from "@/components/ui/card";
 import {
   ChartConfig,
@@ -58,7 +58,14 @@ export function Chart({ monthly, currDate }: { monthly: expense[], currDate: Dat
     return (
       <Card className="bg-white">
         <ChartContainer config={chartConfig}>
-          <AreaChart accessibilityLayer data={parsed}>
+        <LineChart
+            accessibilityLayer
+            data={parsed}
+            margin={{
+              left: 12,
+              right: 12,
+            }}
+          >
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="date"
@@ -68,17 +75,17 @@ export function Chart({ monthly, currDate }: { monthly: expense[], currDate: Dat
               tickFormatter={(value) => value.slice(0, 6)}
             />
             <ChartTooltip
-              cursor={true}
-              content={<ChartTooltipContent indicator="line" />}
+              cursor={false}
+              content={<ChartTooltipContent hideLabel />}
             />
-            <Area
+                        <Line
               dataKey="price"
-              type="linear"
-              fill="#4A3AFF"
-              fillOpacity={0.5}
+              type="natural"
               stroke="#4A3AFF"
+              strokeWidth={2}
+              dot={false}
             />
-          </AreaChart>
+          </LineChart>
         </ChartContainer>
       </Card>
     );
