@@ -1,16 +1,10 @@
 import expense from "@/types";
+import { format } from "date-fns";
 import { TableCell, TableRow } from "@/components/ui/table";
 import React from "react";
 import ContextMenu from "./ContextMenu";
 
 const ExpenseItem = ({ expense }: { expense: expense }) => {
-	expense.date = new Date(expense.date);
-	expense.date.setDate(expense.date.getDate() - 1);
-	const options: Intl.DateTimeFormatOptions = {
-		day: "2-digit",
-		month: "short",
-		year: "numeric",
-	};
 
 	return (
 		<TableRow>
@@ -18,10 +12,7 @@ const ExpenseItem = ({ expense }: { expense: expense }) => {
 				{expense.label}
 			</TableCell>
 			<TableCell className="w-3/12">
-				{expense.date.toLocaleDateString(
-					undefined,
-					options
-				)}
+				{format(expense.date, "e MMM YYYY")}
 			</TableCell>
 			<TableCell className="text-end">{`₱${new Intl.NumberFormat(
 				"en-US",

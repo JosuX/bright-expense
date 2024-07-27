@@ -8,7 +8,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   relationMode = "prisma"
-  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  url = env("POSTGRES_URL_NO_SSL") // uses connection pooling
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
