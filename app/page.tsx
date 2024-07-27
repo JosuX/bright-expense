@@ -72,10 +72,13 @@ const Page = () => {
 			return nextPage;
 		},
 	});
+	if(status == "success"){
+		setDaily(data?.pages[0].day, data?.pages[0].daySum);
+		setMonthly(data?.pages[0].month);
+		setRefresh(refetch);
+	}
 
-	setDaily(data?.pages[0].day, data?.pages[0].daySum);
-	setMonthly(data?.pages[0].month);
-	setRefresh(refetch);
+
 
 	const handlePreviousDay = () => {
 		const newDate = new Date(currentDate);
