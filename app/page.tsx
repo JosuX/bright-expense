@@ -27,7 +27,6 @@ import {
 } from "@/components/ui/pagination";
 import { useExpenseStore } from "@/stores/expenseStore";
 import { format } from "date-fns";
-import expense from "@/types";
 
 const Page = () => {
 	const [currentDate, setCurrentDate] = useState(new Date());
