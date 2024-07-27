@@ -4,7 +4,6 @@ import React from "react";
 import ContextMenu from "./ContextMenu";
 
 const ExpenseItem = ({ expense, refetch }: { expense: expense, refetch: any }) => {
-    expense.date = new Date(expense.date);
     const options: Intl.DateTimeFormatOptions = {
         day: "2-digit",
         month: "short",
