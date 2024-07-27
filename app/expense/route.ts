@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: Request) {
 	const data = await req.json();
-	let parsed_date = new Date().setDate(new Date(data.date).getDate() + 1)
-	const result = await addExpense({...data, date: parsed_date})
+	console.log(data.date)
+	const result = await addExpense(data)
 	return Response.json(result);
 }
