@@ -28,18 +28,18 @@ import {
 import expense from "@/types";
 import { useExpenseStore } from "@/stores/expenseStore";
 import { format } from "date-fns";
+import useDate from "@/hooks/date";
 
 const Page = () => {
-	const [currentDate, setCurrentDate] = useState<Date>(null);
+	const [currentDate, setCurrentDate] = useState(useDate());
 	useEffect(() => {
-		setCurrentDate(new Date())
 		const handleKeyDown = (event: KeyboardEvent) => {
 			if (event.key === "ArrowLeft") {
 				handlePreviousDay();
 			} else if (
 				event.key === "ArrowRight" &&
 				!(
-					currentDate?.toLocaleDateString() ==
+					currentDate.toLocaleDateString() ==
 					new Date().toLocaleDateString()
 				)
 			) {
@@ -86,7 +86,7 @@ const Page = () => {
 	} = useInfiniteQuery({
 		queryKey: [
 			"expenses",
-			currentDate?.toISOString().split("T")[0],
+			currentDate.toISOString().split("T")[0],
 		],
 		queryFn: fetchExpenses,
 		initialPageParam: 1,
@@ -104,13 +104,13 @@ const Page = () => {
 
 	const handlePreviousDay = () => {
 		const newDate = new Date(currentDate);
-		newDate.setDate(currentDate?.getDate() - 1);
+		newDate.setDate(currentDate.getDate() - 1);
 		setCurrentDate(newDate);
 	};
 
 	const handleNextDay = () => {
 		const newDate = new Date(currentDate);
-		newDate.setDate(currentDate?.getDate() + 1);
+		newDate.setDate(currentDate.getDate() + 1);
 		setCurrentDate(newDate);
 	};
 
@@ -173,7 +173,6 @@ const Page = () => {
 												width="100"
 												color="#171717"
 												ariaLabel="line-wave-loading"
-												wrapperClass="text-center justify-center items-center"
 											/>
 										</TableCell>
 									</TableRow>
@@ -219,13 +218,13 @@ const Page = () => {
 							</PaginationItem>
 							<PaginationItem
 								hidden={
-									currentDate?.toLocaleDateString() ==
+									currentDate.toLocaleDateString() ==
 									new Date().toLocaleDateString()
 								}
 							>
 								<PaginationNext
 									onClick={
-										currentDate?.toLocaleDateString() ==
+										currentDate.toLocaleDateString() ==
 										new Date().toLocaleDateString()
 											? null
 											: handleNextDay
