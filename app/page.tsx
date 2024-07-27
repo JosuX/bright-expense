@@ -156,7 +156,7 @@ const Page = () => {
 				<div className="overflow-y-scroll min-h-40 max-h-[500px]">
 					<Table className="bg-[#171717] relative">
 						<TableBody className="bg-white">
-							{content.length != 0 || content !== undefined  ? (
+							{content?.length != 0 || content !== undefined  ? (
 								content
 							) : (
 								<TableRow>
