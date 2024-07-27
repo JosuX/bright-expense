@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { LineWave } from 'react-loader-spinner'
 import { useShallow } from "zustand/react/shallow";
 import FloatingButton from "@/components/internal/AddButton";
 import Header from "@/components/internal/Header";
@@ -113,7 +114,7 @@ const Page = () => {
 			);
 	}, [currentDate]);
 
-	console.log(daily)
+	console.log(daily);
 
 	const content = daily?.map(
 		(expense: expense, index: number) => (
@@ -156,18 +157,32 @@ const Page = () => {
 				<div className="overflow-y-scroll min-h-40 max-h-[500px]">
 					<Table className="bg-[#171717] relative">
 						<TableBody className="bg-white">
-							{daily?.length == 0 || daily === undefined  ? (
-								<TableRow>
-									<TableCell
-										colSpan={4}
-										className="font-medium text-center justify-center items-center"
-									>
-										It looks like you
-										haven't added any
-										expenses
-									</TableCell>
-								</TableRow>
-							) : (content)}
+							{daily?.length == 0 ||
+							daily === undefined ? (
+								status == "pending" ? (
+									<LineWave
+										visible={true}
+										height="100"
+										width="100"
+										color="#171717"
+										ariaLabel="line-wave-loading"
+									/>
+								) : (
+									<TableRow>
+										<TableCell
+											colSpan={4}
+											className="font-medium text-center justify-center items-center"
+										>
+											It looks like
+											you haven't
+											added any
+											expenses
+										</TableCell>
+									</TableRow>
+								)
+							) : (
+								content
+							)}
 						</TableBody>
 					</Table>
 				</div>
@@ -186,7 +201,10 @@ const Page = () => {
 							</PaginationItem>
 							<PaginationItem>
 								<PaginationLink className="hover:!bg-[#171717] hover:text-white text-white">
-									{format(currentDate, "M/d")}
+									{format(
+										currentDate,
+										"M/d"
+									)}
 								</PaginationLink>
 							</PaginationItem>
 							<PaginationItem
