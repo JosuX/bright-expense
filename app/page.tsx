@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useShallow } from 'zustand/react/shallow'
+import { useShallow } from "zustand/react/shallow";
 import FloatingButton from "@/components/internal/AddButton";
 import Header from "@/components/internal/Header";
 import { Card } from "@/components/ui/card";
@@ -28,9 +28,14 @@ import expense from "@/types";
 import { useExpenseStore } from "@/stores/expenseStore";
 
 const Page = () => {
-	const { daily, setDaily, setMonthly, setRefresh } = useExpenseStore(
-		useShallow((state) => ({ ...state })),
-	)
+	const {
+		daily,
+		setDaily,
+		setMonthly,
+		setRefresh,
+	} = useExpenseStore(
+		useShallow((state) => ({ ...state }))
+	);
 	const today = new Date();
 	const [currentDate, setCurrentDate] = useState(today);
 
@@ -68,9 +73,9 @@ const Page = () => {
 		},
 	});
 
-	setDaily(data?.pages[0].day, data?.pages[0].daySum)
-	setMonthly(data?.pages[0].month)
-	setRefresh(refetch)
+	setDaily(data?.pages[0].day, data?.pages[0].daySum);
+	setMonthly(data?.pages[0].month);
+	setRefresh(refetch);
 
 	const handlePreviousDay = () => {
 		const newDate = new Date(currentDate);
@@ -107,12 +112,14 @@ const Page = () => {
 			);
 	}, [currentDate]);
 
-	const content = daily.map((expense: expense, index: number) => (
-			<ExpenseItem
-				expense={expense}
-				key={expense.id}
-			/>
-		));
+	const content = daily
+		? daily.map((expense: expense, index: number) => (
+				<ExpenseItem
+					expense={expense}
+					key={expense.id}
+				/>
+		  ))
+		: null;
 
 	return (
 		<div className="flex flex-col items-center justify-center gap-3 mx-8">
@@ -122,9 +129,7 @@ const Page = () => {
 					Expense Tracker
 				</span>
 			</div>
-			<Header
-				currDate={currentDate}
-			/>
+			<Header currDate={currentDate} />
 			<h2 className="self-start font-semibold text-base mt-5">
 				All Expenses
 			</h2>
@@ -132,9 +137,15 @@ const Page = () => {
 				<Table className="bg-[#171717]">
 					<TableHeader>
 						<TableRow>
-							<TableHead className="w-4/12">Label</TableHead>
-							<TableHead className="w-3/12">Date</TableHead>
-							<TableHead className="text-end">Price</TableHead>
+							<TableHead className="w-4/12">
+								Label
+							</TableHead>
+							<TableHead className="w-3/12">
+								Date
+							</TableHead>
+							<TableHead className="text-end">
+								Price
+							</TableHead>
 							<TableHead className="!px-[26px] w-0" />
 						</TableRow>
 					</TableHeader>
@@ -145,19 +156,21 @@ const Page = () => {
 							{Number(content) != 0 ? (
 								content
 							) : (
-								<TableCell
-									colSpan={4}
-									className="font-medium text-center justify-center items-center"
-								>
-									It looks like you
-									haven't added any
-									expenses
-								</TableCell>
+								<TableRow>
+									<TableCell
+										colSpan={4}
+										className="font-medium text-center justify-center items-center"
+									>
+										It looks like you
+										haven't added any
+										expenses
+									</TableCell>
+								</TableRow>
 							)}
 						</TableBody>
 					</Table>
 				</div>
-				<FloatingButton/>
+				<FloatingButton />
 
 				<div className="bg-[#171717] h-10 text-white">
 					<Pagination className="items-start justify-start">
