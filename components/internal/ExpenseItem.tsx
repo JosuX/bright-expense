@@ -3,11 +3,7 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import React from "react";
 import ContextMenu from "./ContextMenu";
 
-const ExpenseItem = ({
-	expense,
-}: {
-	expense: expense;
-}) => {
+const ExpenseItem = ({ expense }: { expense: expense }) => {
 	expense.date = new Date(expense.date);
 	expense.date.setDate(expense.date.getDate() - 1);
 	const options: Intl.DateTimeFormatOptions = {
@@ -35,9 +31,7 @@ const ExpenseItem = ({
 				}
 			).format(expense.price)}`}</TableCell>
 			<TableCell className="text-right w-1">
-				<ContextMenu
-					expense={expense}
-				/>
+				<ContextMenu expense={expense} />
 			</TableCell>
 		</TableRow>
 	);

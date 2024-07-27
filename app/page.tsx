@@ -112,14 +112,14 @@ const Page = () => {
 			);
 	}, [currentDate]);
 
-	const content = daily
-		? daily.map((expense: expense, index: number) => (
-				<ExpenseItem
-					expense={expense}
-					key={expense.id}
-				/>
-		  ))
-		: null;
+	const content = daily?.map(
+		(expense: expense, index: number) => (
+			<ExpenseItem
+				expense={expense}
+				key={expense.id}
+			/>
+		)
+	);
 
 	return (
 		<div className="flex flex-col items-center justify-center gap-3 mx-8">

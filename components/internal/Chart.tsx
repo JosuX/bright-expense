@@ -47,7 +47,7 @@ export function Chart({ currDate }: { currDate: Date }) {
         return { date: `${month}/${day}`, price: 0 };
       });
   
-      monthly.forEach((expense) => {
+      monthly?.forEach((expense) => {
         const date = new Date(expense.date);
         const day = date.getUTCDate();
         if (day <= adjustedDaysInMonth) { 
