@@ -173,6 +173,7 @@ const Page = () => {
 												width="100"
 												color="#171717"
 												ariaLabel="line-wave-loading"
+												wrapperClass="text-center justify-center items-center"
 											/>
 										</TableCell>
 									</TableRow>
