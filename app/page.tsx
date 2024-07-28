@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { ThreeDots } from "react-loader-spinner";
 import { useShallow } from "zustand/react/shallow";
-import FloatingButton from "@/components/internal/AddButton";
+import AddButton from "@/components/internal/AddButton";
 import Header from "@/components/internal/Header";
 import { Card } from "@/components/ui/card";
 import { FaCoins } from "react-icons/fa";
@@ -126,23 +126,12 @@ const Page = () => {
 		setCurrentDate(newDate);
 	};
 
-	const content = daily?.map((expenseItem : expense, index) => {
-		if(index + 1 == daily.length){
-			return (
-				<ExpenseItem
-				className="py-3"
-					expense={expenseItem}
-					key={expenseItem.id}
-				/>
-			)
-		}
-		return (
-			<ExpenseItem
-				expense={expenseItem}
-				key={expenseItem.id}
-			/>
-		)
-	});
+	const content = daily?.map((expenseItem : expense) => (
+		<ExpenseItem
+			expense={expenseItem}
+			key={expenseItem.id}
+		/>
+	));
 
 	return (
 		<div className="flex flex-col items-center justify-center gap-3 mx-8">
@@ -174,7 +163,7 @@ const Page = () => {
 					</TableHeader>
 				</Table>
 				<div className="overflow-y-scroll min-h-40 max-h-[500px]">
-					<Table className="bg-[#171717] relative">
+					<Table className="bg-[#171717] relative mb-8">
 						<TableBody className="bg-white">
 							{status === "pending" ? (
 								<TableRow>
@@ -211,7 +200,7 @@ const Page = () => {
 						</TableBody>
 					</Table>
 				</div>
-				<FloatingButton />
+				<AddButton />
 				<div className="bg-[#171717] h-10 text-white">
 					<Pagination className="items-start justify-start">
 						<PaginationContent className="items-start justify-start">

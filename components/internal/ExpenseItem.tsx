@@ -6,17 +6,11 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import React from "react";
 import ContextMenu from "./ContextMenu";
 
-interface ExpenseItemProps {
-    className?: string;
-    expense: expense;
-}
-
-const ExpenseItem = ({ expense, className }: ExpenseItemProps) => {
+const ExpenseItem = ({ expense }: { expense: expense }) => {
     const date = new Date(expense.date);
     date.setDate(date.getDate() - 1);
-	className = className === undefined ? "" : className
 	return (
-		<TableRow className={className}>
+		<TableRow>
 			<TableCell className="w-4/12">
 				{expense.label}
 			</TableCell>
