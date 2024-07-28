@@ -1,8 +1,9 @@
 "use server";
 
 import { deleteExpense } from "@/db/expense";
+import { NextRequest } from "next/server";
 
-export async function DELETE(_, {
+export async function DELETE(req : NextRequest,{
 	params,
 }: {
 	params: { id: string };
