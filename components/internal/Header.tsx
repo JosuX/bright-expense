@@ -49,7 +49,7 @@ const Header = ({ currDate }: { currDate: Date }) => {
 				</div>
 			</CollapsibleTrigger>
 			<CollapsibleContent className="mt-7">
-				<Chart currDate={currDate} daySum={daySum} />
+				<Chart currDate={currDate} />
 			</CollapsibleContent>
 		</Collapsible>
 	);
