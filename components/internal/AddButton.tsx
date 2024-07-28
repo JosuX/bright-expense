@@ -12,10 +12,10 @@ import { TiPlus } from "react-icons/ti";
 import { FormModal } from "./ExpenseModal";
 import { useState } from "react";
 
-const FloatingButton = () => {
+const AddButton = () => {
 	const [open, setOpen] = useState(false);
 	return (
-		<div className="mx-6 absolute bottom-14 right-0">
+		<div className="mx-7 absolute bottom-14 right-0">
 			<Dialog open={open} onOpenChange={setOpen}>
 				<DialogTrigger asChild>
 					<button
@@ -42,4 +42,4 @@ const FloatingButton = () => {
 	);
 };
 
-export default FloatingButton;
+export default AddButton;
