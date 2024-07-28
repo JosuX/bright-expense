@@ -3,6 +3,7 @@
 import prisma from "@/db/client";
 import { startOfDay, endOfDay, startOfMonth, endOfMonth } from 'date-fns';
 
+
 const addExpense = async (data: {
 	label: string;
 	date: Date;

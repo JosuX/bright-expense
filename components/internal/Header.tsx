@@ -24,6 +24,7 @@ const Header = ({ currDate }: { currDate: Date }) => {
 			open={isOpen}
 			onOpenChange={setIsOpen}
 			className="text-white bg-[#171717] rounded-xl py-6 px-7 w-full"
+			onClick={() => setIsOpen(!isOpen)}
 		>
 			<CollapsibleTrigger asChild>
 				<div className="flex flex-row justify-between items-center">
