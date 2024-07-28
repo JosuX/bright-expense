@@ -123,6 +123,7 @@ const Page = () => {
 
 	useEffect(() => {
 		if (entry?.isIntersecting && hasNextPage) {
+			console.log(entry.isIntersecting)
 		  fetchNextPage();
 		}
 	  }, [entry?.isIntersecting, hasNextPage, fetchNextPage]);
