@@ -51,7 +51,7 @@ export function Chart({ currDate }: { currDate: Date }) {
       const date = new Date(expense.date);
       const day = date.getUTCDate();
       if (day <= adjustedDaysInMonth) {
-        parsed[day - 1].price += Number(expense.price);
+        parsed[day].price += Number(expense.price);
       }
     });
 
