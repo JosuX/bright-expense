@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/pagination";
 import { useExpenseStore } from "@/stores/expenseStore";
 import { format } from "date-fns";
+import expense from "@/types";
 
 const Page = () => {
 	const [currentDate, setCurrentDate] = useState(
@@ -125,12 +126,23 @@ const Page = () => {
 		setCurrentDate(newDate);
 	};
 
-	const content = daily?.map((expenseItem) => (
-		<ExpenseItem
-			expense={expenseItem}
-			key={expenseItem.id}
-		/>
-	));
+	const content = daily?.map((expenseItem : expense, index) => {
+		if(index + 1 == daily.length){
+			return (
+				<ExpenseItem
+				className="py-3"
+					expense={expenseItem}
+					key={expenseItem.id}
+				/>
+			)
+		}
+		return (
+			<ExpenseItem
+				expense={expenseItem}
+				key={expenseItem.id}
+			/>
+		)
+	});
 
 	return (
 		<div className="flex flex-col items-center justify-center gap-3 mx-8">
