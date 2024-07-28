@@ -17,7 +17,7 @@ const addExpense = async (data: {
 }
 
 const getMonthlyExpense = async (date: Date) => {
- date.setDate(date.getDate() - 1);
+ date.setDate(date.getDate());
 	const startDate = startOfMonth(date);
 	const endDate = endOfMonth(date);
 
