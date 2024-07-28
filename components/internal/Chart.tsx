@@ -23,7 +23,7 @@ const getDaysInMonth = (month, year) => {
   return new Date(year, month, 0).getDate();
 };
 
-export function Chart({ currDate }: { currDate: Date }) {
+export function Chart({ currDate, daySum }: { currDate: Date, daySum: number }) {
   const { monthly } = useExpenseStore(useShallow((state) => ({ ...state })));
   const [parsedData, setParsedData] = useState([]);
   
@@ -43,7 +43,7 @@ export function Chart({ currDate }: { currDate: Date }) {
 
     const adjustedDaysInMonth = (todayMonth === month && todayYear === year) ? todayDate : daysInMonth;
   
-    if (prevMonthRef.current === month && prevYearRef.current === year) {
+    if (prevMonthRef.current === month && prevYearRef.current === year && prevMonthRef.current !== null && prevYearRef.current !== null) {
       return;
     }
 
@@ -64,7 +64,7 @@ export function Chart({ currDate }: { currDate: Date }) {
     });
     
     setParsedData(parsed);
-  }, [currDate, monthly]);
+  }, [currDate, monthly, daySum]);
 
   return (
     <Card className="bg-white">
