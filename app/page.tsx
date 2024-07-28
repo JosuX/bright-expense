@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect, useMemo } from "react";
 import { ThreeDots } from "react-loader-spinner";
 import { useShallow } from "zustand/react/shallow";
