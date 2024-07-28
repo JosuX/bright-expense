@@ -73,7 +73,6 @@ const Page = () => {
 			);
 	}, [currentDate]);
 
-	const queryClient = useQueryClient();
 
 	const fetchExpenses = async ({
 		pageParam
@@ -105,11 +104,7 @@ const Page = () => {
 		getNextPageParam: (lastPage, allPages) =>
 			lastPage.length
 				? allPages.length + 1
-				: undefined,
-		enabled: !queryClient.getQueryData([
-			"expenses",
-			currentDate.toISOString().split("T")[0],
-		]),
+				: undefined
 	});
 
 	useEffect(() => {
