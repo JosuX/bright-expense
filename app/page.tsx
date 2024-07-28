@@ -31,10 +31,10 @@ import {
 import { useExpenseStore } from "@/stores/expenseStore";
 import { format } from "date-fns";
 import expense from "@/types";
-import { useIntersectionObserver } from "@uidotdev/usehooks";
+import { useInView } from "react-intersection-observer";
 
 const Page = () => {
-	const [ref, entry] = useIntersectionObserver();
+	const { ref, inView } = useInView();
 	const [currentDate, setCurrentDate] = useState(
 		new Date()
 	);
@@ -122,11 +122,10 @@ const Page = () => {
 	});
 
 	useEffect(() => {
-		if (entry?.isIntersecting && hasNextPage) {
-			console.log(entry.isIntersecting)
-		  fetchNextPage();
+		if (inView && hasNextPage) {
+			fetchNextPage();
 		}
-	  }, [entry?.isIntersecting, hasNextPage, fetchNextPage]);
+	}, [inView, hasNextPage, fetchNextPage]);
 
 	useEffect(() => {
 		if (data?.pages) {
@@ -155,7 +154,7 @@ const Page = () => {
 		(expenseItem: expense, index) =>
 			daily?.length == index + 1 ? (
 				<ExpenseItem
-				innerRef={ref}
+					innerRef={ref}
 					expense={expenseItem}
 					key={expenseItem.id}
 				/>
