@@ -170,7 +170,7 @@ const Page = () => {
 			)
 	);
 const pagination_date = () => {
-let date = currentDate;
+let date = new Date(currentDate.toString());
 date.setDate(date.getDate()-1);
 return date;
 }
