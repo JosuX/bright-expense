@@ -1,6 +1,4 @@
-"use client";
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { ThreeDots } from "react-loader-spinner";
 import { useShallow } from "zustand/react/shallow";
 import FloatingButton from "@/components/internal/AddButton";
@@ -29,9 +27,7 @@ import { useExpenseStore } from "@/stores/expenseStore";
 import { format } from "date-fns";
 
 const Page = () => {
-	const [currentDate, setCurrentDate] = useState(
-		new Date()
-	);
+	const [currentDate, setCurrentDate] = useState(new Date());
 	const {
 		daily,
 		setDaily,
@@ -46,40 +42,16 @@ const Page = () => {
 		}))
 	);
 
-	useEffect(() => {
-		const handleKeyDown = (event) => {
-			if (event.key === "ArrowLeft") {
-				handlePreviousDay();
-			} else if (
-				event.key === "ArrowRight" &&
-				currentDate.toLocaleDateString() !==
-					new Date().toLocaleDateString()
-			) {
-				handleNextDay();
-			}
-		};
-
-		window.addEventListener("keydown", handleKeyDown);
-		return () =>
-			window.removeEventListener(
-				"keydown",
-				handleKeyDown
-			);
-	}, [currentDate]);
-
-	const fetchExpenses = async ({
-		pageParam = 1,
-		queryKey,
-	}) => {
+	const fetchExpenses = async ({ pageParam = 1, queryKey }) => {
 		const date = queryKey[1];
-		const res = await fetch(
-			`/expense?p=${pageParam}&d=${date}`
-		);
+		const res = await fetch(`/expense?p=${pageParam}&d=${date}`);
 		if (!res.ok) {
 			throw new Error("Network response was not ok");
 		}
 		return res.json();
 	};
+
+	const memoizedFetchExpenses = useMemo(() => fetchExpenses, []);
 
 	const {
 		data,
@@ -93,13 +65,10 @@ const Page = () => {
 			"expenses",
 			currentDate.toISOString().split("T")[0],
 		],
-		queryFn: fetchExpenses,
+		queryFn: memoizedFetchExpenses,
 		initialPageParam: 1,
-		getNextPageParam: (lastPage, allPages) => {
-			return lastPage.length
-				? allPages.length + 1
-				: undefined;
-		},
+		getNextPageParam: (lastPage, allPages) =>
+			lastPage.length ? allPages.length + 1 : undefined,
 	});
 
 	useEffect(() => {
@@ -126,37 +95,24 @@ const Page = () => {
 	};
 
 	const content = daily?.map((expenseItem) => (
-		<ExpenseItem
-			expense={expenseItem}
-			key={expenseItem.id}
-		/>
+		<ExpenseItem expense={expenseItem} key={expenseItem.id} />
 	));
 
 	return (
 		<div className="flex flex-col items-center justify-center gap-3 mx-8">
 			<div className="flex items-center self-start justify-start mt-8 mb-4 gap-3.5">
 				<FaCoins size={20} />
-				<span className="text-xl font-extrabold">
-					Expense Tracker
-				</span>
+				<span className="text-xl font-extrabold">Expense Tracker</span>
 			</div>
 			<Header currDate={currentDate} />
-			<h2 className="self-start font-semibold text-base mt-5">
-				All Expenses
-			</h2>
+			<h2 className="self-start font-semibold text-base mt-5">All Expenses</h2>
 			<Card className="rounded-xl overflow-hidden w-full relative">
 				<Table className="bg-[#171717]">
 					<TableHeader>
 						<TableRow>
-							<TableHead className="w-4/12">
-								Label
-							</TableHead>
-							<TableHead className="w-3/12">
-								Date
-							</TableHead>
-							<TableHead className="text-end">
-								Price
-							</TableHead>
+							<TableHead className="w-4/12">Label</TableHead>
+							<TableHead className="w-3/12">Date</TableHead>
+							<TableHead className="text-end">Price</TableHead>
 							<TableHead className="!px-[26px] w-0" />
 						</TableRow>
 					</TableHeader>
@@ -166,10 +122,7 @@ const Page = () => {
 						<TableBody className="bg-white">
 							{status === "pending" ? (
 								<TableRow>
-									<TableCell
-										colSpan={4}
-										className="font-medium text-center justify-center items-center"
-									>
+									<TableCell colSpan={4} className="font-medium text-center justify-center items-center">
 										<ThreeDots
 											visible={true}
 											height="300"
@@ -180,16 +133,10 @@ const Page = () => {
 										/>
 									</TableCell>
 								</TableRow>
-							) : daily?.length === 0 ||
-							  daily === undefined ? (
+							) : daily?.length === 0 || daily === undefined ? (
 								<TableRow>
-									<TableCell
-										colSpan={4}
-										className="font-medium text-center justify-center items-center"
-									>
-										It looks like you
-										haven't added any
-										expenses
+									<TableCell colSpan={4} className="font-medium text-center justify-center items-center">
+										It looks like you haven't added any expenses
 									</TableCell>
 								</TableRow>
 							) : (
@@ -203,31 +150,13 @@ const Page = () => {
 					<Pagination className="items-start justify-start">
 						<PaginationContent className="items-start justify-start">
 							<PaginationItem>
-								<PaginationPrevious
-									onClick={
-										handlePreviousDay
-									}
-									className="hover:!bg-[#171717] hover:text-white text-white"
-								/>
+								<PaginationPrevious onClick={handlePreviousDay} className="hover:!bg-[#171717] hover:text-white text-white" />
 							</PaginationItem>
 							<PaginationItem>
-								<PaginationLink className="hover:!bg-[#171717] hover:text-white text-white">
-									{format(
-										currentDate,
-										"M/d"
-									)}
-								</PaginationLink>
+								<PaginationLink className="hover:!bg-[#171717] hover:text-white text-white">{format(currentDate, "M/d")}</PaginationLink>
 							</PaginationItem>
-							<PaginationItem
-								hidden={
-									currentDate.toLocaleDateString() ===
-									new Date().toLocaleDateString()
-								}
-							>
-								<PaginationNext
-									onClick={handleNextDay}
-									className="hover:!bg-[#171717] hover:text-white text-white"
-								/>
+							<PaginationItem hidden={currentDate.toLocaleDateString() === new Date().toLocaleDateString()}>
+								<PaginationNext onClick={handleNextDay} className="hover:!bg-[#171717] hover:text-white text-white" />
 							</PaginationItem>
 						</PaginationContent>
 					</Pagination>
