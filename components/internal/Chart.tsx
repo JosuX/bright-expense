@@ -23,7 +23,7 @@ const getDaysInMonth = (month, year) => {
   return new Date(year, month, 0).getDate();
 };
 
-export function Chart({ currDate, daySum }: { currDate: Date, daySum: number }) {
+export function Chart({ currDate }: { currDate: Date }) {
   const { monthly } = useExpenseStore(useShallow((state) => ({ ...state })));
   const [parsedData, setParsedData] = useState([]);
 
@@ -56,7 +56,7 @@ export function Chart({ currDate, daySum }: { currDate: Date, daySum: number }) 
     });
 
     setParsedData(parsed);
-  }, [currDate, monthly, daySum]); // Include daySum as a dependency
+  }, [monthly]);
 
   return (
     <Card className="bg-white">
