@@ -38,7 +38,7 @@ export function Chart({ currDate }: { currDate: Date }) {
     const todayYear = today.getUTCFullYear();
     const todayDate = today.getUTCDate();
 
-    const adjustedDaysInMonth = (todayMonth === month && todayYear === year) ? todayDate + 1 : daysInMonth;
+    const adjustedDaysInMonth = (todayMonth === month && todayYear === year) ? todayDate : daysInMonth;
   
     const parsed = useMemo(() => {
       let parsedData = Array.from({ length: adjustedDaysInMonth }, (_, index) => {
