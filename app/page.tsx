@@ -76,15 +76,12 @@ const Page = () => {
 	const queryClient = useQueryClient();
 
 	const fetchExpenses = async ({
-		pageParam = 1,
-		queryKey,
+		pageParam
 	}: {
 		pageParam: number;
-		queryKey: string[];
 	}) => {
-		const date = queryKey[1];
 		const res = await fetch(
-			`/expense?p=${pageParam}&d=${date}`
+			`/expense?p=${pageParam}&d=${currentDate.toISOString().split("T")[0]}`
 		);
 		if (!res.ok) {
 			throw new Error("Network response was not ok");
@@ -101,8 +98,7 @@ const Page = () => {
 		refetch,
 	} = useInfiniteQuery({
 		queryKey: [
-			"expenses",
-			currentDate.toISOString().split("T")[0],
+			"expenses"
 		],
 		queryFn: fetchExpenses,
 		initialPageParam: 1,
