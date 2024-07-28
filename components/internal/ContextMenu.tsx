@@ -9,8 +9,9 @@ import { HiDotsVertical } from "react-icons/hi";
 import { toast } from "sonner";
 import { useExpenseStore } from "@/stores/expenseStore";
 import { useShallow } from "zustand/react/shallow";
+import expense from "@/types";
 
-const ContextMenu = ({ expense }) => {
+const ContextMenu = ({ expense } : {expense : expense}) => {
 	const { refresh } = useExpenseStore(
 		useShallow((state) => ({ ...state }))
 	);

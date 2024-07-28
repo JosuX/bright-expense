@@ -19,13 +19,13 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const getDaysInMonth = (month, year) => {
+const getDaysInMonth = (month : number, year : number) => {
   return new Date(year, month, 0).getDate();
 };
 
 export function Chart({ currDate }: { currDate: Date }) {
   const { monthly } = useExpenseStore(useShallow((state) => ({ ...state })));
-  const [parsedData, setParsedData] = useState([]);
+  const [parsedData, setParsedData] = useState<{date: string, price: number }[]>([]);
 
   
   useEffect(() => {
