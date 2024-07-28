@@ -73,20 +73,29 @@ const Page = () => {
 			);
 	}, [currentDate]);
 
+	const queryClient = useQueryClient();
 
 	const fetchExpenses = async ({
-		pageParam
+		pageParam = 1,
+		queryKey,
 	}: {
 		pageParam: number;
+		queryKey: string[];
 	}) => {
+		const date = queryKey[1];
 		const res = await fetch(
-			`/expense?p=${pageParam}&d=${currentDate.toISOString().split("T")[0]}`
+			`/expense?p=${pageParam}&d=${date}`
 		);
 		if (!res.ok) {
 			throw new Error("Network response was not ok");
 		}
 		return res.json();
 	};
+
+	const memoizedFetchExpenses = useMemo(
+		() => fetchExpenses,
+		[]
+	);
 
 	const {
 		data,
@@ -97,18 +106,22 @@ const Page = () => {
 		refetch,
 	} = useInfiniteQuery({
 		queryKey: [
-			"expenses"
+			"expenses",
+			currentDate.toISOString().split("T")[0],
 		],
-		queryFn: fetchExpenses,
+		queryFn: memoizedFetchExpenses,
 		initialPageParam: 1,
 		getNextPageParam: (lastPage, allPages) =>
 			lastPage.day.length
 				? allPages.length + 1
-				: undefined
+				: undefined,
+		enabled: !queryClient.getQueryData([
+			"expenses",
+			currentDate.toISOString().split("T")[0],
+		]),
 	});
 
 	useEffect(() => {
-		console.log(inView, hasNextPage)
 		if (inView && hasNextPage) {
 			fetchNextPage();
 		}
@@ -116,9 +129,10 @@ const Page = () => {
 
 	useEffect(() => {
 		if (data?.pages) {
+			const allDays = data.pages.reduce((acc, page) => [...acc, ...page.day], []);
 			const firstPage = data.pages[0];
 			if (firstPage) {
-				setDaily(firstPage.day, firstPage.daySum);
+				setDaily(allDays, firstPage.daySum);
 				setMonthly(firstPage.month);
 			}
 		}
