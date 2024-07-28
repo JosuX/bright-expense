@@ -129,7 +129,10 @@ const Page = () => {
 
 	useEffect(() => {
 		if (data?.pages) {
-			const allDays = data.pages.reduce((acc, page) => [...acc, ...page.day], []);
+			const allDays = data.pages.reduce(
+				(acc, page) => [...acc, ...page.day],
+				[]
+			);
 			const firstPage = data.pages[0];
 			if (firstPage) {
 				setDaily(allDays, firstPage.daySum);
