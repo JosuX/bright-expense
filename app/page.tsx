@@ -92,11 +92,6 @@ const Page = () => {
 		return res.json();
 	};
 
-	const memoizedFetchExpenses = useMemo(
-		() => fetchExpenses,
-		[]
-	);
-
 	const {
 		data,
 		status,
@@ -109,7 +104,7 @@ const Page = () => {
 			"expenses",
 			currentDate.toISOString().split("T")[0],
 		],
-		queryFn: memoizedFetchExpenses,
+		queryFn: fetchExpenses,
 		initialPageParam: 1,
 		getNextPageParam: (lastPage, allPages) =>
 			lastPage.length
