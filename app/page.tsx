@@ -101,10 +101,7 @@ const Page = () => {
 		],
 		queryFn: fetchExpenses,
 		initialPageParam: 1,
-		getNextPageParam: (lastPage, allPages) =>
-			lastPage.length
-				? allPages.length + 1
-				: undefined
+		getNextPageParam: (lastPage) => lastPage.nextCursor,
 	});
 
 	useEffect(() => {
