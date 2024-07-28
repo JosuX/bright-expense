@@ -170,8 +170,8 @@ const Page = () => {
 									>
 										<LineWave
 											visible={true}
-											height="100"
-											width="100"
+											height="200"
+											width="200"
 											color="#171717"
 											ariaLabel="line-wave-loading"
 											wrapperClass="text-center justify-center items-center"
