@@ -122,6 +122,7 @@ const Page = () => {
 	});
 
 	useEffect(() => {
+		console.log(inView, hasNextPage)
 		if (inView && hasNextPage) {
 			fetchNextPage();
 		}
