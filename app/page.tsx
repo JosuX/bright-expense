@@ -172,9 +172,10 @@ const Page = () => {
 									>
 										<ThreeDots
 											visible={true}
-											height="300"
-											width="300"
-											radius="100"
+											height="200"
+											width="200"
+											radius="50"
+											color="#171717"
 											ariaLabel="three-dots-loading"
 											wrapperClass="text-center justify-center items-center"
 										/>
