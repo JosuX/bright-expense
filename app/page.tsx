@@ -101,7 +101,10 @@ const Page = () => {
 		],
 		queryFn: fetchExpenses,
 		initialPageParam: 1,
-		getNextPageParam: (lastPage) => (!lastPage.last ? lastPage.number + 1 : undefined)
+		getNextPageParam: (lastPage, allPages) =>
+			lastPage[0].day.length
+				? allPages.length + 1
+				: undefined
 	});
 
 	useEffect(() => {
