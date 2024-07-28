@@ -8,7 +8,7 @@ import ContextMenu from "./ContextMenu";
 
 interface ExpenseItemProps extends React.HTMLAttributes<HTMLParagraphElement> {
 	expense: expense;
-	innerRef?: any
+	innerRef?: React.Ref<HTMLTableRowElement>;
   }
 
 const ExpenseItem = ({ expense, innerRef }: ExpenseItemProps) => {
