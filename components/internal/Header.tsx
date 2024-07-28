@@ -42,7 +42,7 @@ const Header = ({ currDate }: { currDate: Date }) => {
 							Total Expenses
 						</span>
 					</div>
-					{isOpen ? (
+					{!isOpen ? (
 						<IoIosArrowDown size={20} />
 					) : (
 						<IoIosArrowUp size={20} />
