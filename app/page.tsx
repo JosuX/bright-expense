@@ -102,7 +102,7 @@ const Page = () => {
 		queryFn: fetchExpenses,
 		initialPageParam: 1,
 		getNextPageParam: (lastPage, allPages) =>
-			lastPage[0].day.length
+			lastPage.day.length
 				? allPages.length + 1
 				: undefined
 	});
