@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { useMemo } from "react";
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 import { Card } from "@/components/ui/card";
 import {
@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/chart";
 import { useExpenseStore } from "@/stores/expenseStore";
 import { useShallow } from "zustand/react/shallow";
-import { LineWave } from "react-loader-spinner";
 
 const chartConfig = {
   price: {
@@ -25,56 +24,43 @@ const getDaysInMonth = (month, year) => {
 };
 
 export function Chart({ currDate }: { currDate: Date }) {
-  const { monthly } = useExpenseStore(useShallow((state) => ({ ...state })));
-  const [loading, setLoading] = useState(true);
+  
+  const { monthly } = useExpenseStore(
+		useShallow((state) => ({ ...state })),
+	)
+    const firstDate = new Date(currDate);
+    const month = firstDate.getUTCMonth() + 1;
+    const year = firstDate.getUTCFullYear();
+    const daysInMonth = getDaysInMonth(month, year);
 
-  const firstDate = new Date(currDate);
-  const month = firstDate.getUTCMonth() + 1;
-  const year = firstDate.getUTCFullYear();
-  const daysInMonth = getDaysInMonth(month, year);
+    const today = new Date();
+    const todayMonth = today.getUTCMonth() + 1;
+    const todayYear = today.getUTCFullYear();
+    const todayDate = today.getUTCDate();
 
-  const today = new Date();
-  const todayMonth = today.getUTCMonth() + 1;
-  const todayYear = today.getUTCFullYear();
-  const todayDate = today.getUTCDate();
-
-  const adjustedDaysInMonth = (todayMonth === month && todayYear === year) ? todayDate : daysInMonth;
-
-  const parsed = useMemo(() => {
-    let parsedData = Array.from({ length: adjustedDaysInMonth }, (_, index) => {
-      const day = index + 1;
-      return { date: `${month}/${day}`, price: 0 };
-    });
-
-    monthly?.forEach((expense) => {
-      const date = new Date(expense.date);
-      const day = date.getUTCDate();
-      if (day <= adjustedDaysInMonth) { 
-        parsedData[day - 1].price += Number(expense.price);
-      }
-    });
-
-    return parsedData;
-  }, [monthly, month, year, adjustedDaysInMonth]); 
-
-  useEffect(() => {
-    setLoading(false);
-  }, [parsed]);
-
-  return (
-    <Card className="bg-white">
-      {loading ? (
-        <LineWave
-        visible={true}
-        height="200"
-        width="200"
-        color="#171717"
-        ariaLabel="line-wave-loading"
-        wrapperClass="text-center justify-center items-center"
-      />
-      ) : (
+    const adjustedDaysInMonth = (todayMonth === month && todayYear === year) ? todayDate : daysInMonth;
+  
+    const parsed = useMemo(() => {
+      let parsedData = Array.from({ length: adjustedDaysInMonth }, (_, index) => {
+        const day = index + 1;
+        return { date: `${month}/${day}`, price: 0 };
+      });
+  
+      monthly?.forEach((expense) => {
+        const date = new Date(expense.date);
+        const day = date.getUTCDate();
+        if (day <= adjustedDaysInMonth) { 
+          parsedData[day - 1].price += Number(expense.price);
+        }
+      });
+  
+      return parsedData;
+    }, [monthly, month, year, adjustedDaysInMonth]); 
+  
+    return (
+      <Card className="bg-white">
         <ChartContainer config={chartConfig}>
-          <LineChart
+        <LineChart
             accessibilityLayer
             data={parsed}
             margin={{
@@ -94,7 +80,7 @@ export function Chart({ currDate }: { currDate: Date }) {
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Line
+                        <Line
               dataKey="price"
               type="linear"
               stroke="#4A3AFF"
@@ -103,7 +89,6 @@ export function Chart({ currDate }: { currDate: Date }) {
             />
           </LineChart>
         </ChartContainer>
-      )}
-    </Card>
-  );
-}
+      </Card>
+    );
+  }

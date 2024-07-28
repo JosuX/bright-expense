@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { LineWave } from "react-loader-spinner";
+import { ThreeDots } from "react-loader-spinner";
 import { useShallow } from "zustand/react/shallow";
 import FloatingButton from "@/components/internal/AddButton";
 import Header from "@/components/internal/Header";
@@ -29,7 +29,9 @@ import { useExpenseStore } from "@/stores/expenseStore";
 import { format } from "date-fns";
 
 const Page = () => {
-	const [currentDate, setCurrentDate] = useState(new Date());
+	const [currentDate, setCurrentDate] = useState(
+		new Date()
+	);
 	const {
 		daily,
 		setDaily,
@@ -168,12 +170,12 @@ const Page = () => {
 										colSpan={4}
 										className="font-medium text-center justify-center items-center"
 									>
-										<LineWave
+										<ThreeDots
 											visible={true}
-											height="200"
-											width="200"
-											color="#171717"
-											ariaLabel="line-wave-loading"
+											height="300"
+											width="300"
+											radius="100"
+											ariaLabel="three-dots-loading"
 											wrapperClass="text-center justify-center items-center"
 										/>
 									</TableCell>
