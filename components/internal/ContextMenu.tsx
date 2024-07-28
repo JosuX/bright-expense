@@ -31,7 +31,9 @@ const ContextMenu = ({ expense } : {expense : expense}) => {
 			} else {
 				toast.error("Failed to delete expense.");
 			}
-			refresh();
+			if(refresh !== null){
+				refresh()
+			}
 		} catch (error) {
 			console.error("Error deleting expense:", error);
 			toast.error(
