@@ -74,7 +74,9 @@ export function FormModal({
 			method: "POST",
 			body: JSON.stringify(parsed_data),
 		});
-		refresh();
+		if(refresh !== null){
+			refresh()
+		}
 		setOpen(false);
 		toast.success(
 			"An expense has been successfully added."

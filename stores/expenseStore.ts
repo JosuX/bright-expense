@@ -10,14 +10,14 @@ interface ExpenseState {
 	daily: expense[];
 	daySum: number;
 	monthly: expense[];
-	refresh: (
+	refresh: ((
 		options?: RefetchOptions
 	) => Promise<
 		QueryObserverResult<
 			InfiniteData<any, unknown>,
 			Error
 		>
-	>;
+	>) | null
 	setDaily: (data: expense[], sum: number) => void;
 	setMonthly: (data: expense[]) => void;
 	setRefresh: (
