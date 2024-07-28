@@ -7,7 +7,10 @@ import AddButton from "@/components/internal/AddButton";
 import Header from "@/components/internal/Header";
 import { Card } from "@/components/ui/card";
 import { FaCoins } from "react-icons/fa";
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import {
+	useInfiniteQuery,
+	useQueryClient,
+} from "@tanstack/react-query";
 import {
 	Table,
 	TableBody,
@@ -28,8 +31,10 @@ import {
 import { useExpenseStore } from "@/stores/expenseStore";
 import { format } from "date-fns";
 import expense from "@/types";
+import { useIntersectionObserver } from "@uidotdev/usehooks";
 
 const Page = () => {
+	const [ref, entry] = useIntersectionObserver();
 	const [currentDate, setCurrentDate] = useState(
 		new Date()
 	);
@@ -48,7 +53,7 @@ const Page = () => {
 	);
 
 	useEffect(() => {
-		const handleKeyDown = (event) => {
+		const handleKeyDown = (event: KeyboardEvent) => {
 			if (event.key === "ArrowLeft") {
 				handlePreviousDay();
 			} else if (
@@ -70,16 +75,27 @@ const Page = () => {
 
 	const queryClient = useQueryClient();
 
-	const fetchExpenses = async ({ pageParam = 1, queryKey }) => {
+	const fetchExpenses = async ({
+		pageParam = 1,
+		queryKey,
+	}: {
+		pageParam: number;
+		queryKey: string[];
+	}) => {
 		const date = queryKey[1];
-		const res = await fetch(`/expense?p=${pageParam}&d=${date}`);
+		const res = await fetch(
+			`/expense?p=${pageParam}&d=${date}`
+		);
 		if (!res.ok) {
 			throw new Error("Network response was not ok");
 		}
 		return res.json();
 	};
 
-	const memoizedFetchExpenses = useMemo(() => fetchExpenses, []);
+	const memoizedFetchExpenses = useMemo(
+		() => fetchExpenses,
+		[]
+	);
 
 	const {
 		data,
@@ -96,12 +112,20 @@ const Page = () => {
 		queryFn: memoizedFetchExpenses,
 		initialPageParam: 1,
 		getNextPageParam: (lastPage, allPages) =>
-			lastPage.length ? allPages.length + 1 : undefined,
+			lastPage.length
+				? allPages.length + 1
+				: undefined,
 		enabled: !queryClient.getQueryData([
 			"expenses",
 			currentDate.toISOString().split("T")[0],
 		]),
 	});
+
+	useEffect(() => {
+		if (entry?.isIntersecting && hasNextPage) {
+		  fetchNextPage();
+		}
+	  }, [entry?.isIntersecting, hasNextPage, fetchNextPage]);
 
 	useEffect(() => {
 		if (data?.pages) {
@@ -126,12 +150,21 @@ const Page = () => {
 		setCurrentDate(newDate);
 	};
 
-	const content = daily?.map((expenseItem : expense) => (
-		<ExpenseItem
-			expense={expenseItem}
-			key={expenseItem.id}
-		/>
-	));
+	const content = daily?.map(
+		(expenseItem: expense, index) =>
+			daily?.length == index + 1 ? (
+				<ExpenseItem
+				innerRef={ref}
+					expense={expenseItem}
+					key={expenseItem.id}
+				/>
+			) : (
+				<ExpenseItem
+					expense={expenseItem}
+					key={expenseItem.id}
+				/>
+			)
+	);
 
 	return (
 		<div className="flex flex-col items-center justify-center gap-3 mx-8">
@@ -165,7 +198,17 @@ const Page = () => {
 				<div className="overflow-y-scroll min-h-40 max-h-[500px]">
 					<Table className="bg-[#171717] relative mb-8">
 						<TableBody className="bg-white">
-							{status === "pending" ? (
+							{status === "error" ? (
+								<TableRow>
+									<TableCell
+										colSpan={4}
+										className="font-medium text-center text-red-500 justify-center items-center"
+									>
+										Error connecting to
+										the database.
+									</TableCell>
+								</TableRow>
+							) : status === "pending" ? (
 								<TableRow>
 									<TableCell
 										colSpan={4}
@@ -197,6 +240,26 @@ const Page = () => {
 							) : (
 								content
 							)}
+							<TableRow>
+								<TableCell
+									colSpan={4}
+									className="font-medium text-center justify-center items-center"
+								>
+									{isFetchingNextPage ? (
+										<ThreeDots
+											visible={true}
+											height="50"
+											width="50"
+											radius="15"
+											color="#171717"
+											ariaLabel="three-dots-loading"
+											wrapperClass="text-center justify-center items-center"
+										/>
+									) : (
+										<></>
+									)}
+								</TableCell>
+							</TableRow>
 						</TableBody>
 					</Table>
 				</div>

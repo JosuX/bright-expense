@@ -27,6 +27,7 @@ import { format } from "date-fns";
 import { toast } from "sonner";
 import { useExpenseStore } from "@/stores/expenseStore";
 import { useShallow } from "zustand/react/shallow";
+import { Dispatch, SetStateAction } from "react";
 
 const FormSchema = z.object({
 	label: z.string().min(2, {
@@ -47,7 +48,11 @@ const FormSchema = z.object({
 	}),
 });
 
-export function FormModal({ setOpen }) {
+export function FormModal({
+	setOpen,
+}: {
+	setOpen: Dispatch<SetStateAction<boolean>>;
+}) {
 	const { refresh } = useExpenseStore(
 		useShallow((state) => ({ ...state }))
 	);
@@ -62,7 +67,9 @@ export function FormModal({ setOpen }) {
 		data: z.infer<typeof FormSchema>
 	) {
 		let parsed_data = data;
-		parsed_data.date = new Date(data.date.toISOString())
+		parsed_data.date = new Date(
+			data.date.toISOString()
+		);
 		await fetch("/expense", {
 			method: "POST",
 			body: JSON.stringify(parsed_data),
