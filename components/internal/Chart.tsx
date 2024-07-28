@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useRef, useEffect, useState } from "react";
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 import { Card } from "@/components/ui/card";
 import {
@@ -24,10 +24,13 @@ const getDaysInMonth = (month, year) => {
 };
 
 export function Chart({ currDate }: { currDate: Date }) {
+  const { monthly } = useExpenseStore(useShallow((state) => ({ ...state })));
+  const [parsedData, setParsedData] = useState([]);
   
-  const { monthly } = useExpenseStore(
-		useShallow((state) => ({ ...state })),
-	)
+  const prevMonthRef = useRef<number | null>(null);
+  const prevYearRef = useRef<number | null>(null);
+  
+  useEffect(() => {
     const firstDate = new Date(currDate);
     const month = firstDate.getUTCMonth() + 1;
     const year = firstDate.getUTCFullYear();
@@ -40,55 +43,61 @@ export function Chart({ currDate }: { currDate: Date }) {
 
     const adjustedDaysInMonth = (todayMonth === month && todayYear === year) ? todayDate : daysInMonth;
   
-    const parsed = useMemo(() => {
-      let parsedData = Array.from({ length: adjustedDaysInMonth }, (_, index) => {
-        const day = index + 1;
-        return { date: `${month}/${day}`, price: 0 };
-      });
+    if (prevMonthRef.current === month && prevYearRef.current === year) {
+      return;
+    }
+
+    prevMonthRef.current = month;
+    prevYearRef.current = year;
+    
+    const parsed = Array.from({ length: adjustedDaysInMonth }, (_, index) => {
+      const day = index + 1;
+      return { date: `${month}/${day}`, price: 0 };
+    });
   
-      monthly?.forEach((expense) => {
-        const date = new Date(expense.date);
-        const day = date.getUTCDate();
-        if (day <= adjustedDaysInMonth) { 
-          parsedData[day - 1].price += Number(expense.price);
-        }
-      });
-  
-      return parsedData;
-    }, [monthly, month, year, adjustedDaysInMonth]); 
-  
-    return (
-      <Card className="bg-white">
-        <ChartContainer config={chartConfig}>
+    monthly?.forEach((expense) => {
+      const date = new Date(expense.date);
+      const day = date.getUTCDate();
+      if (day <= adjustedDaysInMonth) {
+        parsed[day - 1].price += Number(expense.price);
+      }
+    });
+    
+    setParsedData(parsed);
+  }, [currDate, monthly]);
+
+  return (
+    <Card className="bg-white">
+      <ChartContainer config={chartConfig}>
         <LineChart
-            accessibilityLayer
-            data={parsed}
-            margin={{
-              left: 12,
-              right: 12,
-            }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="date"
-              tickLine={true}
-              axisLine={true}
-              tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 6)}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
-                        <Line
-              dataKey="price"
-              type="linear"
-              stroke="#4A3AFF"
-              strokeWidth={2}
-              dot={false}
-            />
-          </LineChart>
-        </ChartContainer>
-      </Card>
-    );
-  }
+          accessibilityLayer
+          data={parsedData}
+          margin={{
+            left: 12,
+            right: 12,
+          }}
+        >
+          <CartesianGrid vertical={false} />
+          <XAxis
+            dataKey="date"
+            tickLine={true}
+            axisLine={true}
+            tickMargin={8}
+            tickFormatter={(value) => value.slice(0, 6)}
+          />
+          <ChartTooltip
+            cursor={false}
+            content={<ChartTooltipContent hideLabel />}
+          />
+          <Line
+            dataKey="price"
+            type="linear"
+            stroke="#4A3AFF"
+            strokeWidth={2}
+            dot={false}
+          />
+        </LineChart>
+      </ChartContainer>
+    </Card>
+  );
+}
