@@ -49,7 +49,7 @@ const getDailyExpense = async (date: Date, page: number, pageSize: number) => {
 };
 
 const getSumDailyExpense = async (date: Date) => {
- date.setDate(date.getDate() - 1);
+ date.setDate(date.getDate());
 	const startDate = startOfDay(date);
 	const endDate = endOfDay(date);
 
