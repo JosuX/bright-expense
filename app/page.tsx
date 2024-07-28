@@ -169,11 +169,6 @@ const Page = () => {
 				/>
 			)
 	);
-const pagination_date = () => {
-let date = new Date(currentDate.toString());
-date.setDate(date.getDate()-1);
-return date;
-}
 
 	return (
 		<div className="flex flex-col items-center justify-center gap-3 mx-8">
@@ -287,7 +282,7 @@ return date;
 							<PaginationItem>
 								<PaginationLink className="hover:!bg-[#171717] hover:text-white text-white">
 									{format(
-										pagination_date(),
+										currentDate,
 										"M/d"
 									)}
 								</PaginationLink>
