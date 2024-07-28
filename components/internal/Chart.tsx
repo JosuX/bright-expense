@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 import { Card } from "@/components/ui/card";
 import {
@@ -26,9 +26,7 @@ const getDaysInMonth = (month, year) => {
 export function Chart({ currDate, daySum }: { currDate: Date, daySum: number }) {
   const { monthly } = useExpenseStore(useShallow((state) => ({ ...state })));
   const [parsedData, setParsedData] = useState([]);
-  
-  const prevMonthRef = useRef<number | null>(null);
-  const prevYearRef = useRef<number | null>(null);
+
   
   useEffect(() => {
     const firstDate = new Date(currDate);
@@ -42,19 +40,13 @@ export function Chart({ currDate, daySum }: { currDate: Date, daySum: number }) 
     const todayDate = today.getUTCDate();
 
     const adjustedDaysInMonth = (todayMonth === month && todayYear === year) ? todayDate : daysInMonth;
-  
-    if (prevMonthRef.current === month && prevYearRef.current === year && prevMonthRef.current !== null && prevYearRef.current !== null) {
-      return;
-    }
 
-    prevMonthRef.current = month;
-    prevYearRef.current = year;
-    
+
     const parsed = Array.from({ length: adjustedDaysInMonth }, (_, index) => {
       const day = index + 1;
       return { date: `${month}/${day}`, price: 0 };
     });
-  
+
     monthly?.forEach((expense) => {
       const date = new Date(expense.date);
       const day = date.getUTCDate();
@@ -62,9 +54,9 @@ export function Chart({ currDate, daySum }: { currDate: Date, daySum: number }) 
         parsed[day - 1].price += Number(expense.price);
       }
     });
-    
+
     setParsedData(parsed);
-  }, [currDate, monthly, daySum]);
+  }, [currDate, monthly, daySum]); // Include daySum as a dependency
 
   return (
     <Card className="bg-white">
