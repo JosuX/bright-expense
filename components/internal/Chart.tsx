@@ -51,8 +51,9 @@ export function Chart({ currDate }: { currDate: Date }) {
     monthly?.forEach((expense) => {
       const date = new Date(expense.date);
       const day = date.getDate();
+      console.log(day, parsed.length)
       if (day <= adjustedDaysInMonth + 1) {
-        parsed[day].price += Number(expense.price);
+        parsed[day-1].price += Number(expense.price);
       }
     });
 
