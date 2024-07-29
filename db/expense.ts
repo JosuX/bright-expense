@@ -41,7 +41,6 @@ const getDailyExpense = async (
 	page: number,
 	pageSize: number
 ) => {
-	console.log("backend", getTimezoneOffset("Asia/Manila", date))
 	date.setDate(date.getDate() + 1);
 	const startDate = startOfDay(date);
 	const endDate = endOfDay(date);

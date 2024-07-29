@@ -29,7 +29,7 @@ export function Chart({ currDate }: { currDate: Date }) {
 
   
   useEffect(() => {
-    const firstDate = new Date(currDate);
+    const firstDate = currDate;
     firstDate.setDate(firstDate.getDate() +1);
     const month = firstDate.getUTCMonth() + 1;
     const year = firstDate.getUTCFullYear();
@@ -50,7 +50,7 @@ export function Chart({ currDate }: { currDate: Date }) {
 
     monthly?.forEach((expense) => {
       const date = new Date(expense.date);
-      const day = date.getUTCDate();
+      const day = date.getDate();
       if (day <= adjustedDaysInMonth + 1) {
         parsed[day-1].price += Number(expense.price);
       }
