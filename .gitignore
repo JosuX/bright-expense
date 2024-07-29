@@ -38,6 +38,6 @@ next-env.d.ts
 .vercel
 .million
 .env
-/.million/
+/.million/*
 .hintrc
 .vercel

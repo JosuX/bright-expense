@@ -36,7 +36,16 @@ import { useInView } from "react-intersection-observer";
 const Page = () => {
 	const { ref, inView } = useInView();
 	const [currentDate, setCurrentDate] = useState(
-		new Date()
+		new Date(
+			Date.UTC(
+				new Date().getUTCFullYear(),
+				new Date().getUTCMonth(),
+				new Date().getUTCDate(),
+				new Date().getUTCHours(),
+				new Date().getUTCMinutes(),
+				new Date().getUTCSeconds()
+			)
+		)
 	);
 	const {
 		daily,
