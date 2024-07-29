@@ -181,7 +181,8 @@ const Page = () => {
 	);
 
 	return (
-		<div className="flex flex-col items-center justify-center gap-3 mx-8">
+		<div className="flex flex-col items-center justify-center gap-3 mx-8 md:flex-row md:items-start">
+			<div className="flex-grow w-full">
 			<div className="flex items-center self-start justify-start mt-8 mb-4 gap-3.5">
 				<FaCoins size={20} />
 				<span className="text-xl font-extrabold">
@@ -189,7 +190,9 @@ const Page = () => {
 				</span>
 			</div>
 			<Header currDate={currentDate} />
-			<h2 className="self-start font-semibold text-base mt-5">
+			</div>
+			<div className="flex-grow w-full">
+			<h2 className="self-start font-semibold text-base mt-5 md:mt-12">
 				All Expenses
 			</h2>
 			<Card className="rounded-xl overflow-hidden w-full relative">
@@ -312,6 +315,7 @@ const Page = () => {
 					</Pagination>
 				</div>
 			</Card>
+			</div>
 		</div>
 	);
 };

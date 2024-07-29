@@ -15,7 +15,7 @@ import { useShallow } from "zustand/react/shallow";
 
 const Header = ({ currDate }: { currDate: Date }) => {
 	const [isOpen, setIsOpen] = useState(false);
-	const { daySum } = useExpenseStore(
+	const { daySum, daily } = useExpenseStore(
 		useShallow((state) => ({ ...state }))
 	);
 
@@ -49,8 +49,22 @@ const Header = ({ currDate }: { currDate: Date }) => {
 					)}
 				</div>
 			</CollapsibleTrigger>
-			<CollapsibleContent className="mt-7">
+			<CollapsibleContent className="mt-7 md:h-[53.7vh]">
 				<Chart currDate={currDate} />
+				<div className="hidden pt-6 md:grid md:grid-cols-2 md:gap-6 text-md font-medium">
+					<p>
+						Highest Expense:<br/>₱{new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.max(...daily.map(item => item.price)))} {/* Placeholder value */}
+					</p>
+					<p>
+						Lowest Expense:<br/>₱{new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.min(...daily.map(item => item.price)))} {/* Placeholder value */}
+					</p>
+					<p>
+						Average Expense Per Transaction:<br/>₱{new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format((daySum / daily.length))}
+					</p>
+					<p>
+						Number of Transactions:<br/>{daily.length}
+					</p>
+				</div>
 			</CollapsibleContent>
 		</Collapsible>
 	);

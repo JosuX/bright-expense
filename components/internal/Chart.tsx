@@ -61,7 +61,7 @@ export function Chart({ currDate }: { currDate: Date }) {
 
   return (
     <Card className="bg-white">
-      <ChartContainer config={chartConfig}>
+      <ChartContainer config={chartConfig} className="min-h-[80px]">
         <LineChart
           accessibilityLayer
           data={parsedData}
