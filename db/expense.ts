@@ -7,9 +7,7 @@ import {
 	startOfMonth,
 	endOfMonth,
 } from "date-fns";
-const { zonedTimeToUtc, utcToZonedTime, format } = require("date-fns-tz");
-
-const toPH = (date : Date) => zonedTimeToUtc(date.toString(), "Asia/Manila");
+import { getTimezoneOffset } from 'date-fns-tz'
 
 const addExpense = async (data: {
 	label: string;
@@ -43,10 +41,10 @@ const getDailyExpense = async (
 	page: number,
 	pageSize: number
 ) => {
-	date.setDate(date.getDate());
-	let parsed_date = toPH(date)
-	const startDate = startOfDay(parsed_date);
-	const endDate = endOfDay(parsed_date);
+	console.log("backend", getTimezoneOffset("Asia/Manila", date))
+	date.setDate(date.getDate() + 1);
+	const startDate = startOfDay(date);
+	const endDate = endOfDay(date);
 
 	return await prisma.expense.findMany({
 		where: {

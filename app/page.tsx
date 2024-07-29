@@ -32,6 +32,7 @@ import { useExpenseStore } from "@/stores/expenseStore";
 import { format } from "date-fns";
 import expense from "@/types";
 import { useInView } from "react-intersection-observer";
+import { getTimezoneOffset } from 'date-fns-tz'
 
 const Page = () => {
 	const { ref, inView } = useInView();
@@ -47,6 +48,8 @@ const Page = () => {
 			)
 		)
 	);
+
+	console.log(getTimezoneOffset("Asia/Manila", currentDate))
 	const {
 		daily,
 		setDaily,
