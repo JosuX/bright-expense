@@ -53,13 +53,13 @@ const Header = ({ currDate }: { currDate: Date }) => {
 				<Chart currDate={currDate} />
 				<div className="hidden pt-6 md:grid md:grid-cols-2 md:gap-6 text-md font-medium">
 					<p>
-						Highest Expense:<br/>₱{ daySum > 0 ? (new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.max(...daily.map(item => item.price)))) : "N/A"}
+						Highest Expense:<br/>₱ { daySum > 0 ? (new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.max(...daily.map(item => item.price)))) : "N/A"}
 					</p>
 					<p>
-						Lowest Expense:<br/>₱{ daySum > 0 ? (new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.min(...daily.map(item => item.price)))) : "N/A"}
+						Lowest Expense:<br/>₱ { daySum > 0 ? (new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.min(...daily.map(item => item.price)))) : "N/A"}
 					</p>
 					<p>
-						Average Expense Per Transaction:<br/>₱{ daySum > 0 ? (new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format((daySum / daily.length))) : 0}
+						Average Expense Per Transaction:<br/>₱ { daySum > 0 ? (new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format((daySum / daily.length))) : 0}
 					</p>
 					<p>
 						Number of Transactions:<br/>{daily.length}
