@@ -29,7 +29,7 @@ export function Chart({ currDate }: { currDate: Date }) {
 
   
   useEffect(() => {
-    const firstDate = currDate;
+    const firstDate = new Date(currDate);
     firstDate.setDate(firstDate.getDate() +1);
     const month = firstDate.getUTCMonth() + 1;
     const year = firstDate.getUTCFullYear();
