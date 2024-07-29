@@ -43,7 +43,7 @@ export function Chart({ currDate }: { currDate: Date }) {
     const adjustedDaysInMonth = (todayMonth === month && todayYear === year) ? todayDate : daysInMonth;
 
 
-    const parsed = Array.from({ length: adjustedDaysInMonth }, (_, index) => {
+    const parsed = Array.from({ length: adjustedDaysInMonth + 1 }, (_, index) => {
       const day = index + 1;
       return { date: `${month}/${day}`, price: 0 };
     });
@@ -53,7 +53,7 @@ export function Chart({ currDate }: { currDate: Date }) {
       const day = date.getDate();
       console.log(day, parsed.length)
       if (day <= adjustedDaysInMonth + 1) {
-        parsed[day-2].price += Number(expense.price);
+        parsed[day-1].price += Number(expense.price);
       }
     });
 
