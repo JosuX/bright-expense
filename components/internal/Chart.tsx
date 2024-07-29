@@ -52,7 +52,7 @@ export function Chart({ currDate }: { currDate: Date }) {
       const date = new Date(expense.date);
       const day = date.getDate();
       if (day <= adjustedDaysInMonth + 1) {
-        parsed[day-1].price += Number(expense.price);
+        parsed[day].price += Number(expense.price);
       }
     });
 
