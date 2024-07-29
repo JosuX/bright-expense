@@ -8,6 +8,15 @@ import {
 	endOfMonth,
 } from "date-fns";
 
+const toUtc = (date : Date) => Date.UTC(
+	date.getUTCFullYear(),
+	date.getUTCMonth(),
+	date.getUTCDate(),
+	date.getUTCHours(),
+	date.getUTCMinutes(),
+	date.getUTCSeconds()
+)
+
 const addExpense = async (data: {
 	label: string;
 	date: Date;
@@ -41,8 +50,9 @@ const getDailyExpense = async (
 	pageSize: number
 ) => {
 	date.setDate(date.getDate());
-	const startDate = startOfDay(date);
-	const endDate = endOfDay(date);
+	let parsed_date = toUtc(date)
+	const startDate = startOfDay(parsed_date);
+	const endDate = endOfDay(parsed_date);
 
 	return await prisma.expense.findMany({
 		where: {
