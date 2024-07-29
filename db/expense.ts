@@ -7,15 +7,9 @@ import {
 	startOfMonth,
 	endOfMonth,
 } from "date-fns";
+const { zonedTimeToUtc, utcToZonedTime, format } = require("date-fns-tz");
 
-const toUtc = (date : Date) => Date.UTC(
-	date.getUTCFullYear(),
-	date.getUTCMonth(),
-	date.getUTCDate(),
-	date.getUTCHours(),
-	date.getUTCMinutes(),
-	date.getUTCSeconds()
-)
+const toPH = (date : Date) => zonedTimeToUtc(date.toString(), "Asia/Manila");
 
 const addExpense = async (data: {
 	label: string;
@@ -50,7 +44,7 @@ const getDailyExpense = async (
 	pageSize: number
 ) => {
 	date.setDate(date.getDate());
-	let parsed_date = toUtc(date)
+	let parsed_date = toPH(date)
 	const startDate = startOfDay(parsed_date);
 	const endDate = endOfDay(parsed_date);
 
