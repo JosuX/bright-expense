@@ -41,7 +41,7 @@ const Page = () => {
 				new Date().getUTCFullYear(),
 				new Date().getUTCMonth(),
 				new Date().getUTCDate(),
-				new Date().getUTCHours(),
+				new Date().getUTCHours() + 8,
 				new Date().getUTCMinutes(),
 				new Date().getUTCSeconds()
 			)
