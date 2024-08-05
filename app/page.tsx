@@ -41,7 +41,7 @@ const Page = () => {
 				new Date().getUTCFullYear(),
 				new Date().getUTCMonth(),
 				new Date().getUTCDate(),
-				new Date().getUTCHours() + 8,
+				new Date().getUTCHours(),
 				new Date().getUTCMinutes(),
 				new Date().getUTCSeconds()
 			)
@@ -166,7 +166,7 @@ const Page = () => {
 
 	const content = daily?.map(
 		(expenseItem: expense, index) =>
-			daily?.length == index + 1 ? (
+			daily?.length == index ? (
 				<ExpenseItem
 					innerRef={ref}
 					expense={expenseItem}
