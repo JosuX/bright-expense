@@ -13,7 +13,7 @@ interface ExpenseItemProps extends React.HTMLAttributes<HTMLParagraphElement> {
 
 const ExpenseItem = ({ expense, innerRef }: ExpenseItemProps) => {
     const date = new Date(expense.date);
-    date.setDate(date.getDate() - 1);
+    date.setDate(date.getUTCDate() - 1);
 	return (
 		<TableRow ref={innerRef}>
 			<TableCell className="w-4/12">
