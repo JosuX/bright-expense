@@ -15,7 +15,7 @@ const addExpense = async (data: {
 	price: number;
 }) => {
 	let parsed_date = new Date(data.date);
-	parsed_date.setDate(parsed_date.getDate());
+	parsed_date.setDate(parsed_date.getDate() + 2);
 	return await prisma.expense.create({
 		data: { ...data, date: parsed_date },
 	});
