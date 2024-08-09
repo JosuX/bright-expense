@@ -1,20 +1,17 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider     = "postgresql"
+  url          = env("POSTGRES_URL_NO_SSL")
+  directUrl    = env("POSTGRES_URL_NON_POOLING")
   relationMode = "prisma"
-  url = env("POSTGRES_URL_NO_SSL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
 model Expense {
-  id Int @id @default(autoincrement())
+  id    Int      @id @default(autoincrement())
   label String
-  date DateTime @default(now())
+  date  DateTime @default(now())
   price Float
 }

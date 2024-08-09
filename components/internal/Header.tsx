@@ -1,8 +1,5 @@
 "use client";
-import {
-	IoIosArrowDown,
-	IoIosArrowUp,
-} from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import {
 	Collapsible,
 	CollapsibleContent,
@@ -30,13 +27,10 @@ const Header = ({ currDate }: { currDate: Date }) => {
 				<div className="flex flex-row justify-between items-center">
 					<div className="flex flex-col text-start">
 						<span className="font-semibold text-xl">
-							{`₱${new Intl.NumberFormat(
-								"en-US",
-								{
-									minimumFractionDigits: 2,
-									maximumFractionDigits: 2,
-								}
-							).format(daySum ?? 0)}`}
+							{`₱${new Intl.NumberFormat("en-US", {
+								minimumFractionDigits: 2,
+								maximumFractionDigits: 2,
+							}).format(daySum ?? 0)}`}
 						</span>
 						<span className="font-medium text-xs">
 							Total Expenses

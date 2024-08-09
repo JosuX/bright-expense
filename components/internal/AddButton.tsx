@@ -27,9 +27,7 @@ const AddButton = () => {
 				</DialogTrigger>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>
-							Add expense
-						</DialogTitle>
+						<DialogTitle>Add expense</DialogTitle>
 						<DialogDescription>
 							Click submit when you're done
 						</DialogDescription>

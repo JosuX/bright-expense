@@ -35,14 +35,8 @@ const FormSchema = z.object({
 	}),
 	price: z
 		.string()
-		.transform((value) =>
-			parseFloat(value.replace(/[^\d]/g, ""))
-		)
-		.pipe(
-			z
-				.number()
-				.positive("Price must be a positive value.")
-		),
+		.transform((value) => parseFloat(value.replace(/[^\d]/g, "")))
+		.pipe(z.number().positive("Price must be a positive value.")),
 	date: z.date({
 		required_error: "A date of expense is required.",
 	}),
@@ -53,9 +47,7 @@ export function FormModal({
 }: {
 	setOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-	const { refresh } = useExpenseStore(
-		useShallow((state) => ({ ...state }))
-	);
+	const { refresh } = useExpenseStore(useShallow((state) => ({ ...state })));
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
@@ -63,24 +55,18 @@ export function FormModal({
 		},
 	});
 
-	async function onSubmit(
-		data: z.infer<typeof FormSchema>
-	) {
+	async function onSubmit(data: z.infer<typeof FormSchema>) {
 		let parsed_data = data;
-		parsed_data.date = new Date(
-			data.date.toISOString()
-		);
+		parsed_data.date = new Date(data.date.toISOString());
 		await fetch("/expense", {
 			method: "POST",
 			body: JSON.stringify(parsed_data),
 		});
-		if(refresh !== null){
-			refresh()
+		if (refresh !== null) {
+			refresh();
 		}
 		setOpen(false);
-		toast.success(
-			"An expense has been successfully added."
-		);
+		toast.success("An expense has been successfully added.");
 	}
 
 	return (
@@ -116,9 +102,7 @@ export function FormModal({
 								<PopoverTrigger asChild>
 									<FormControl>
 										<Button
-											variant={
-												"outline"
-											}
+											variant={"outline"}
 											className={cn(
 												"pl-3 text-left font-normal",
 												!field.value &&
@@ -126,15 +110,9 @@ export function FormModal({
 											)}
 										>
 											{field.value ? (
-												format(
-													field.value,
-													"PPP"
-												)
+												format(field.value, "PPP")
 											) : (
-												<span>
-													Pick a
-													date
-												</span>
+												<span>Pick a date</span>
 											)}
 											<RxCalendar className="ml-auto h-4 w-4 opacity-50" />
 										</Button>
@@ -146,19 +124,11 @@ export function FormModal({
 								>
 									<Calendar
 										mode="single"
-										selected={
-											field.value
-										}
-										onSelect={
-											field.onChange
-										}
+										selected={field.value}
+										onSelect={field.onChange}
 										disabled={(date) =>
-											date >
-												new Date() ||
-											date <
-												new Date(
-													"1900-01-01"
-												)
+											date > new Date() ||
+											date < new Date("1900-01-01")
 										}
 										initialFocus
 									/>
@@ -178,17 +148,13 @@ export function FormModal({
 								<CurrencyInput
 									name={field.name}
 									placeholder="Enter a price"
-									onChange={
-										field.onChange
-									}
+									onChange={field.onChange}
 									onBlur={field.onBlur}
 									ref={field.ref}
 									className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
 									decimalsLimit={2}
 									prefix="₱"
-									allowNegativeValue={
-										false
-									}
+									allowNegativeValue={false}
 									// onValueChange={(
 									// 	value,
 									// 	name,

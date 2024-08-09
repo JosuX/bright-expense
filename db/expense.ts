@@ -1,13 +1,8 @@
 "use server";
 
 import prisma from "@/db/client";
-import {
-	startOfDay,
-	endOfDay,
-	startOfMonth,
-	endOfMonth,
-} from "date-fns";
-import { getTimezoneOffset } from 'date-fns-tz'
+import { startOfDay, endOfDay, startOfMonth, endOfMonth } from "date-fns";
+import { getTimezoneOffset } from "date-fns-tz";
 
 const addExpense = async (data: {
 	label: string;
@@ -36,11 +31,7 @@ const getMonthlyExpense = async (date: Date) => {
 	});
 };
 
-const getDailyExpense = async (
-	date: Date,
-	page: number,
-	pageSize: number
-) => {
+const getDailyExpense = async (date: Date, page: number, pageSize: number) => {
 	date.setDate(date.getDate() + 1);
 	const startDate = startOfDay(date);
 	const endDate = endOfDay(date);
