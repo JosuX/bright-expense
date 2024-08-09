@@ -166,7 +166,7 @@ const Page = () => {
 
 	const content = daily?.map(
 		(expenseItem: expense, index) =>
-			daily?.length == index ? (
+			daily?.length == index + 1 ? (
 				<ExpenseItem
 					innerRef={ref}
 					expense={expenseItem}
